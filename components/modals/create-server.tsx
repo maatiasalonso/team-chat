@@ -12,12 +12,34 @@ import {
 } from "@nextui-org/react";
 import { useForm, Controller } from "react-hook-form";
 import FileUpload from "@/components/file-upload";
+import { useRouter } from "next/navigation";
 
 const CreateServerModal = () => {
   const { control, handleSubmit, register } = useForm();
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const onSubmit = async (data: any) => {
+    try {
+      setIsLoading(true);
+      const response = await fetch("api/servers", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ data }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create server");
+      }
+
+      setIsLoading(false);
+      router.refresh();
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -36,7 +58,7 @@ const CreateServerModal = () => {
               <form onSubmit={handleSubmit(onSubmit)}>
                 <ModalBody>
                   <Controller
-                    name="serverImage"
+                    name="imageUrl"
                     control={control}
                     defaultValue=""
                     render={({ field }) => (
@@ -48,7 +70,7 @@ const CreateServerModal = () => {
                         }}
                       />
                     )}
-                  />{" "}
+                  />
                   <Input
                     autoFocus
                     label="Server Name"
@@ -63,9 +85,10 @@ const CreateServerModal = () => {
                   <Button
                     color="primary"
                     type="submit"
+                    isLoading={isLoading}
                     className="w-full sm:w-auto hover:bg-blue-500"
                   >
-                    Create
+                    {isLoading ? "Creating..." : "Create"}
                   </Button>
                 </ModalFooter>
               </form>
