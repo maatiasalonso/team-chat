@@ -16,8 +16,10 @@ import {
   HiPlusCircle,
   HiTrash,
   HiLogout,
+  HiChevronUp,
 } from "react-icons/hi";
 import { MemberRole } from "@prisma/client";
+import { useState } from "react";
 
 interface ServerHeaderProps {
   server: ServerWithMembersWithProfiles;
@@ -27,6 +29,7 @@ interface ServerHeaderProps {
 export const ServerHeader = ({ server, role }: ServerHeaderProps) => {
   const isAdmin = role === MemberRole.ADMIN;
   const isModerator = isAdmin || role === MemberRole.MODERATOR;
+  const [isOpen, setIsOpen] = useState(false);
 
   const items = [
     ...(isModerator
@@ -63,12 +66,6 @@ export const ServerHeader = ({ server, role }: ServerHeaderProps) => {
             key: "create-channel",
             label: "Create Channel",
             icon: <HiPlusCircle className="w-5 h-5" />,
-          },
-        ]
-      : []),
-    ...(isModerator
-      ? [
-          {
             divider: true,
           },
         ]
@@ -100,7 +97,14 @@ export const ServerHeader = ({ server, role }: ServerHeaderProps) => {
         <DropdownTrigger className="focus:outline-none">
           <Button
             className="w-full bg-zinc-900/10 text-md font-semibold rounded-none px-3 flex justify-between items-center h-12 border-neutral-200 dark:border-neutral-800 border-b-2 hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition"
-            endContent={<HiChevronDown className="w-5 h-5" />}
+            endContent={
+              !isOpen ? (
+                <HiChevronDown className="w-5 h-5" />
+              ) : (
+                <HiChevronUp className="w-5 h-5" />
+              )
+            }
+            onClick={() => setIsOpen(!isOpen)}
           >
             {server.name}
           </Button>
