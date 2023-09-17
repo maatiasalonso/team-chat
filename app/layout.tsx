@@ -7,6 +7,7 @@ import { Navbar } from "@/components/navbar";
 import { Link } from "@nextui-org/link";
 import clsx from "clsx";
 import { ClerkProvider } from "@clerk/nextjs";
+import { ModalProvider } from "@/components/providers/modal-provider";
 
 export const metadata: Metadata = {
   title: {
@@ -42,8 +43,9 @@ export default function RootLayout({
         >
           <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
             <div className="relative flex flex-col h-screen">
-              <Navbar />
-              <main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
+              {/* <Navbar /> */}
+              <main className="w-full mx-auto pt-16 px-6 flex-grow relative">
+                <ModalProvider />
                 {children}
               </main>
               <footer className="w-full flex items-center justify-center py-3">

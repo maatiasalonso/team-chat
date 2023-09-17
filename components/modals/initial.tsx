@@ -13,15 +13,11 @@ import {
 import { useForm, Controller } from "react-hook-form";
 import FileUpload from "@/components/file-upload";
 import { useRouter } from "next/navigation";
-import { useModal } from "@/hooks/use-modal-store";
 
-export const CreateServerModal = () => {
-  const { isOpen, onClose, type } = useModal();
+const InitialModal = () => {
   const { control, handleSubmit, register } = useForm();
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-
-  const isModalOpen = isOpen && type === "createServer";
 
   const onSubmit = async (data: any) => {
     try {
@@ -40,19 +36,15 @@ export const CreateServerModal = () => {
 
       setIsLoading(false);
       router.refresh();
-      onClose();
+      window.location.reload();
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleClose = () => {
-    onClose();
-  };
-
   return (
     <>
-      <Modal isOpen={isModalOpen} onOpenChange={handleClose}>
+      <Modal defaultOpen>
         <ModalContent>
           {(onClose) => (
             <>
@@ -107,3 +99,5 @@ export const CreateServerModal = () => {
     </>
   );
 };
+
+export default InitialModal;
