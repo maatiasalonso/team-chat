@@ -43,11 +43,14 @@ export const NavigationItem = ({
           onClick={onClick}
         >
           <Image
+            width={1000}
+            height={1000}
             as={NextImage}
-            width={500}
-            height={500}
             src={imageUrl}
             alt="Channel"
+            isZoomed
+            isBlurred
+            className="h-14"
           />
         </Button>
       </div>
