@@ -93,7 +93,15 @@ export const ServerHeader = ({ server, role }: ServerHeaderProps) => {
       : []),
   ];
 
-  const inviteModal = (key: any) => {
+  const handleAction = (key: any) => {
+    if (key === "server-settings") {
+      onOpen("editServer", { server });
+    }
+
+    if (key === "manage-members") {
+      onOpen("members", { server });
+    }
+
     if (key === "invite-people") {
       onOpen("invite", { server });
     }
@@ -120,7 +128,7 @@ export const ServerHeader = ({ server, role }: ServerHeaderProps) => {
         <DropdownMenu
           aria-label="Static Actions"
           items={items}
-          onAction={(key) => inviteModal(key)}
+          onAction={(key) => handleAction(key)}
         >
           {(item: any) => (
             <DropdownItem

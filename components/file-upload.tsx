@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Image } from "@nextui-org/react";
+import { Button, Image, Tooltip } from "@nextui-org/react";
 import { UploadDropzone } from "@/lib/uploadthing";
 import { HiX } from "react-icons/hi";
 import "@uploadthing/react/styles.css";
@@ -21,16 +21,25 @@ const FileUpload = ({ onChange, value, endpoint }: FileUploadProps) => {
           alt="Server Image"
           className="rounded-full w-40 h-40"
         />
-        <Button
-          isIconOnly
-          color="danger"
-          size="sm"
-          aria-label="Remove"
-          className="rounded-full absolute top-0 right-0 z-50 hover:bg-danger-500/90 shadow-sm"
-          onClick={() => onChange("")}
+        <Tooltip
+          placement="top"
+          showArrow
+          content="Remove image"
+          closeDelay={100}
         >
-          <HiX />
-        </Button>
+          <Button
+            isIconOnly
+            color="danger"
+            size="sm"
+            aria-label="Remove"
+            className="rounded-full absolute top-0 right-0 z-50 hover:bg-danger-500/90 shadow-sm"
+            onClick={() => {
+              onChange("");
+            }}
+          >
+            <HiX />
+          </Button>
+        </Tooltip>
       </div>
     );
   }
