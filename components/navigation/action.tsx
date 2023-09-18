@@ -16,7 +16,7 @@ export const Action = () => {
           isIconOnly
           onClick={() => onOpen("createServer")}
         >
-          <HiPlus className="w-5 h-5 text-emerald-500 group-hover:text-white" />
+          <HiPlus className="w-5 h-5 text-emerald-500 group-hover:text-white group-hover:scale-110" />
         </Button>
       </ActionTooltip>
     </>

@@ -20,6 +20,7 @@ import {
 } from "react-icons/hi";
 import { MemberRole } from "@prisma/client";
 import { useState } from "react";
+import { useModal } from "@/hooks/use-modal-store";
 
 interface ServerHeaderProps {
   server: ServerWithMembersWithProfiles;
@@ -30,6 +31,7 @@ export const ServerHeader = ({ server, role }: ServerHeaderProps) => {
   const isAdmin = role === MemberRole.ADMIN;
   const isModerator = isAdmin || role === MemberRole.MODERATOR;
   const [isOpen, setIsOpen] = useState(false);
+  const { onOpen } = useModal();
 
   const items = [
     ...(isModerator
@@ -91,6 +93,12 @@ export const ServerHeader = ({ server, role }: ServerHeaderProps) => {
       : []),
   ];
 
+  const inviteModal = (key: any) => {
+    if (key === "invite-people") {
+      onOpen("invite", { server });
+    }
+  };
+
   return (
     <>
       <Dropdown className="w-[230px] dark:bg-[#1E1F22]">
@@ -109,19 +117,17 @@ export const ServerHeader = ({ server, role }: ServerHeaderProps) => {
             {server.name}
           </Button>
         </DropdownTrigger>
-        <DropdownMenu aria-label="Static Actions" items={items}>
+        <DropdownMenu
+          aria-label="Static Actions"
+          items={items}
+          onAction={(key) => inviteModal(key)}
+        >
           {(item: any) => (
             <DropdownItem
-              key={item.hasOwnProperty("key") ? item.key : null}
-              color={
-                item.hasOwnProperty("key")
-                  ? item.key === "delete-server"
-                    ? "danger"
-                    : "default"
-                  : "default"
-              }
+              key={item.key}
+              color={item.key === "delete-server" ? "danger" : "default"}
               className={item.hasOwnProperty("class") ? item.class : ""}
-              endContent={item.hasOwnProperty("icon") ? item.icon : ""}
+              endContent={item.icon}
               showDivider={
                 item.hasOwnProperty("divider") ? item.divider : false
               }
