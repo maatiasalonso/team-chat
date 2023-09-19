@@ -9,24 +9,47 @@ import {
   ModalFooter,
   Button,
   Input,
+  Select,
+  SelectItem,
 } from "@nextui-org/react";
-import { useForm, Controller } from "react-hook-form";
-import FileUpload from "@/components/file-upload";
-import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { useParams, useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal-store";
+import { ChannelType } from "@prisma/client";
+import { ErrorMessage } from "@hookform/error-message";
+
+interface FormInputs {
+  channelName: string;
+  channelType: string;
+}
 
 export const CreateChannelModal = () => {
-  const { isOpen, onClose, type } = useModal();
-  const { control, handleSubmit, register } = useForm();
+  const { isOpen, onClose, type, data } = useModal();
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<FormInputs>({
+    mode: "onChange",
+  });
+
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const params = useParams();
 
   const isModalOpen = isOpen && type === "createChannel";
 
+  const channelTypes = [
+    { value: ChannelType.AUDIO },
+    { value: ChannelType.VIDEO },
+    { value: ChannelType.TEXT },
+  ];
+
   const onSubmit = async (data: any) => {
     try {
+      data.serverId = params.serverId;
       setIsLoading(true);
-      const response = await fetch("/api/servers", {
+      const response = await fetch(`/api/channels`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -50,6 +73,11 @@ export const CreateChannelModal = () => {
     onClose();
   };
 
+  const capitalize = (str: string) => {
+    if (typeof str !== "string") return ""; // Ensure input is a string
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  };
+
   return (
     <>
       <Modal isOpen={isModalOpen} onOpenChange={handleClose}>
@@ -57,37 +85,43 @@ export const CreateChannelModal = () => {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1 text-center">
-                <h1 className="text-2xl mt-4">Customize your server</h1>
-                <p className="text-sm text-zinc-400 mt-2">
-                  Give your server a personality with a name and an image. You
-                  can always change it later.
-                </p>
+                <h1 className="text-2xl mt-4">Create Channel</h1>
               </ModalHeader>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <ModalBody>
-                  <Controller
-                    name="imageUrl"
-                    control={control}
-                    defaultValue=""
-                    render={({ field }) => (
-                      <FileUpload
-                        endpoint="serverImage"
-                        value={field.value}
-                        onChange={(url) => {
-                          field.onChange(url);
-                        }}
-                      />
-                    )}
-                  />
                   <Input
                     autoFocus
-                    label="Server Name"
-                    placeholder="Enter server name"
+                    label={
+                      <div>
+                        Channel Name <span className="text-danger">*</span>
+                      </div>
+                    }
+                    placeholder="Enter channel name"
+                    variant="bordered"
+                    labelPlacement="outside"
+                    {...register("channelName", {
+                      validate: (value) =>
+                        value.toLowerCase() !== "general" ||
+                        "Channel name cannot be 'general'.",
+                    })}
+                  />
+                  <div className="text-danger text-xs">
+                    <ErrorMessage errors={errors} name="channelName" />
+                  </div>
+                  <Select
+                    label="Channel Type"
+                    labelPlacement="outside"
+                    placeholder="Select a channel type"
                     variant="bordered"
                     isRequired
-                    labelPlacement="outside"
-                    {...register("serverName")}
-                  />
+                    {...register("channelType")}
+                  >
+                    {channelTypes.map((channel) => (
+                      <SelectItem key={channel.value} value={channel.value}>
+                        {capitalize(channel.value)}
+                      </SelectItem>
+                    ))}
+                  </Select>
                 </ModalBody>
                 <ModalFooter>
                   <Button

@@ -82,7 +82,7 @@ export const ServerHeader = ({ server, role }: ServerHeaderProps) => {
           },
         ]
       : []),
-    ...(!isAdmin
+    ...(isAdmin
       ? [
           {
             key: "leave-server",
@@ -104,6 +104,14 @@ export const ServerHeader = ({ server, role }: ServerHeaderProps) => {
 
     if (key === "invite-people") {
       onOpen("invite", { server });
+    }
+
+    if (key === "create-channel") {
+      onOpen("createChannel", { server });
+    }
+
+    if (key === "leave-server") {
+      onOpen("leaveServer", { server });
     }
   };
 

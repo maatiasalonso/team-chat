@@ -12,7 +12,6 @@ export async function PATCH(req: Request, { params }: { params: ReqParams }) {
     const profile = await currentProfile();
     const { role } = await req.json();
 
-    console.log(role);
     if (!profile) return new NextResponse("Unauthorized", { status: 401 });
 
     if (!params.serverId)

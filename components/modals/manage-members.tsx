@@ -26,7 +26,7 @@ import {
   HiShieldCheck,
   HiShieldExclamation,
 } from "react-icons/hi";
-import { LuShield } from "react-icons/lu";
+import { LuShield, LuShieldQuestion } from "react-icons/lu";
 
 const roleIconMap = {
   GUEST: null,
@@ -135,7 +135,7 @@ export const ManageMembersModal = () => {
                             <DropdownItem
                               key="role"
                               startContent={
-                                <HiQuestionMarkCircle className="w-4 h-4 mt-0.5" />
+                                <LuShieldQuestion className="w-4 h-4 " />
                               }
                               endContent={
                                 <HiChevronRight className="w-4 h-4" />
