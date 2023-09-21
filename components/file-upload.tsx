@@ -3,7 +3,6 @@
 import { Button, Image, Tooltip } from "@nextui-org/react";
 import { UploadDropzone } from "@/lib/uploadthing";
 import { HiX } from "react-icons/hi";
-import "@uploadthing/react/styles.css";
 
 interface FileUploadProps {
   onChange: (url?: string) => void;

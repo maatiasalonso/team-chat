@@ -12,19 +12,19 @@ import {
 import { useModal } from "@/hooks/use-modal-store";
 import { useRouter } from "next/navigation";
 
-export const LeaveServerModal = () => {
+export const DeleteServerModal = () => {
   const router = useRouter();
   const { onOpen, isOpen, onClose, type, data } = useModal();
   const { server } = data;
-  const isModalOpen = isOpen && type === "leaveServer";
+  const isModalOpen = isOpen && type === "deleteServer";
   const [isLoading, setIsLoading] = useState(false);
 
   const onClick = async () => {
     try {
       setIsLoading(true);
 
-      await fetch(`/api/servers/${server?.id}/leave`, {
-        method: "PATCH",
+      await fetch(`/api/servers/${server?.id}`, {
+        method: "DELETE",
       });
 
       onClose();
@@ -47,29 +47,32 @@ export const LeaveServerModal = () => {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1 text-center">
-                <h1 className="text-2xl mt-4">Leave Server</h1>
+                <h1 className="text-2xl mt-4">Delete Server</h1>
               </ModalHeader>
               <ModalBody>
-                <p className="text-center">
-                  Are you sure you want to leave
-                  <span className="text-indigo-500"> {server?.name}</span>?
+                <p className="text-center font-bold">
+                  Are you sure you want to do this?
+                </p>
+                <p className="text-center text-danger">
+                  <span className="font-bold"> {server?.name}</span> will be
+                  permanently deleted.
                 </p>
               </ModalBody>
               <ModalFooter>
                 <Button
-                  isLoading={isLoading}
+                  isDisabled={isLoading}
                   className="w-full sm:w-auto hover:bg-zinc-500/90"
                   onPress={() => onClose()}
                 >
                   Cancel
                 </Button>
                 <Button
-                  color="primary"
+                  color="danger"
                   isLoading={isLoading}
-                  className="w-full sm:w-auto hover:bg-blue-500"
+                  className="w-full sm:w-auto hover:bg-danger-500/90"
                   onPress={() => onClick()}
                 >
-                  {isLoading ? "Leaving server..." : "Confirm"}
+                  {isLoading ? "Deleting server..." : "Confirm"}
                 </Button>
               </ModalFooter>
             </>

@@ -82,7 +82,7 @@ export const ServerHeader = ({ server, role }: ServerHeaderProps) => {
           },
         ]
       : []),
-    ...(isAdmin
+    ...(!isAdmin
       ? [
           {
             key: "leave-server",
@@ -112,6 +112,10 @@ export const ServerHeader = ({ server, role }: ServerHeaderProps) => {
 
     if (key === "leave-server") {
       onOpen("leaveServer", { server });
+    }
+
+    if (key === "delete-server") {
+      onOpen("deleteServer", { server });
     }
   };
 
