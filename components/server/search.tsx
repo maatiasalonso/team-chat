@@ -132,7 +132,7 @@ export const ServerSearch = ({ data }: ServerSearchProps) => {
 
                     return (
                       <div key={label}>
-                        <Listbox aria-label="Dynamic Actions">
+                        <Listbox aria-label="Search Actions">
                           <ListboxSection title={label} items={data}>
                             {data.map(({ id, icon, name }) => (
                               <ListboxItem

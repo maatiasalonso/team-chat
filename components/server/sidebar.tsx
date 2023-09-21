@@ -11,6 +11,8 @@ import {
   HiShieldExclamation,
   HiVideoCamera,
 } from "react-icons/hi";
+import SidebarDivider from "./divider";
+import { ServerSection } from "./section";
 
 interface ServerSiderbarProps {
   serverId: string;
@@ -120,6 +122,17 @@ export const ServerSidebar = async ({ serverId }: ServerSiderbarProps) => {
             },
           ]}
         />
+        <SidebarDivider />
+        {!!textChannels?.length && (
+          <div className="mb-2">
+            <ServerSection
+              sectionType="channels"
+              channelType={ChannelType.TEXT}
+              role={role}
+              label="Text Channels"
+            />
+          </div>
+        )}
       </div>
     </div>
   );
