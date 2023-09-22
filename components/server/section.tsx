@@ -4,13 +4,13 @@ import { ServerWithMembersWithProfiles } from "@/types";
 import { ChannelType, MemberRole } from "@prisma/client";
 import { ActionTooltip } from "../action-tooltip";
 import { Button } from "@nextui-org/button";
-import { HiPlus } from "react-icons/hi";
+import { HiCog, HiPlus } from "react-icons/hi";
 import { useModal } from "@/hooks/use-modal-store";
 
 interface ServerSectionProps {
   label: string;
   role?: MemberRole;
-  sectionType: "channels" | "member";
+  sectionType: "channels" | "members";
   channelType: ChannelType;
   server?: ServerWithMembersWithProfiles;
 }
@@ -36,6 +36,18 @@ export const ServerSection = ({
             onPress={() => onOpen("createChannel")}
           >
             <HiPlus className="w-4 h-4" />
+          </Button>
+        </ActionTooltip>
+      )}
+      {role === MemberRole.ADMIN && sectionType === "members" && (
+        <ActionTooltip label="Create Channel" placement="top">
+          <Button
+            isIconOnly
+            variant="light"
+            size="sm"
+            onPress={() => onOpen("members", { server })}
+          >
+            <HiCog className="w-4 h-4" />
           </Button>
         </ActionTooltip>
       )}
