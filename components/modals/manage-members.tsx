@@ -45,7 +45,6 @@ export const ManageMembersModal = () => {
   const onRoleChange = async (memberId: string, role: MemberRole) => {
     try {
       setLoadingId(memberId);
-      setRoleSelected(false);
       const response = await fetch(`/api/members/${server.id}/${memberId}`, {
         method: "PATCH",
         headers: {
@@ -141,7 +140,6 @@ export const ManageMembersModal = () => {
                                 <HiChevronRight className="w-4 h-4" />
                               }
                               showDivider
-                              closeOnSelect={!roleSelected}
                               onMouseEnter={() => setRoleSelected(true)}
                               onMouseLeave={() => setRoleSelected(false)}
                             >
@@ -158,9 +156,9 @@ export const ManageMembersModal = () => {
                                         <HiCheck className="w-4 h-4" />
                                       )
                                     }
-                                    onPress={() =>
-                                      onRoleChange(member.id, "GUEST")
-                                    }
+                                    onPress={() => {
+                                      onRoleChange(member.id, "GUEST");
+                                    }}
                                   >
                                     Guest
                                   </DropdownItem>
@@ -174,9 +172,9 @@ export const ManageMembersModal = () => {
                                         <HiCheck className="w-4 h-4" />
                                       )
                                     }
-                                    onPress={() =>
-                                      onRoleChange(member.id, "MODERATOR")
-                                    }
+                                    onPress={() => {
+                                      onRoleChange(member.id, "MODERATOR");
+                                    }}
                                   >
                                     Moderator
                                   </DropdownItem>

@@ -86,7 +86,7 @@ export const ServerSearch = ({ data }: ServerSearchProps) => {
             </Kbd>
           </>
         }
-        className="w-full justify-start mt-2"
+        className="w-full justify-start mt-2 font-semibold"
         onPress={onOpen}
       >
         Search...

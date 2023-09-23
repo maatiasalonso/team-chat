@@ -41,7 +41,7 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
 
   return (
     <Tooltip
-      content={`Switch to ${theme}`}
+      content={`Switch to ${theme === "light" ? "dark" : "light"}`}
       placement="right"
       showArrow
       closeDelay={100}

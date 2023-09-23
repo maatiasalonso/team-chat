@@ -12,6 +12,7 @@ import {
   HiVideoCamera,
 } from "react-icons/hi";
 import { ActionTooltip } from "../action-tooltip";
+import { useModal } from "@/hooks/use-modal-store";
 
 interface ServerChannelProps {
   channel: Channel;
@@ -30,10 +31,15 @@ export const ServerChannel = ({
   server,
   role,
 }: ServerChannelProps) => {
+  const { onOpen } = useModal();
   const params = useParams();
   const router = useRouter();
 
   const Icon = iconMap[channel.type];
+
+  const onClick = () => {
+    router.push(`/servers/${params?.serverId}/channels/${channel.id}`);
+  };
 
   return (
     <>
@@ -41,17 +47,28 @@ export const ServerChannel = ({
         variant="light"
         startContent={Icon}
         className="w-full justify-start mt-1 font-semibold pr-1"
+        onPress={() => onClick()}
       >
         {channel.name}
         {channel.name !== "general" && role !== MemberRole.GUEST && (
           <div className="flex items-center ml-auto">
             <ActionTooltip label="Edit">
-              <Button size="sm" variant="light" isIconOnly>
+              <Button
+                size="sm"
+                variant="light"
+                isIconOnly
+                onPress={() => onOpen("editChannel", { server, channel })}
+              >
                 <HiPencilAlt className="hidden w-4 h-4 group-hover:block" />
               </Button>
             </ActionTooltip>
             <ActionTooltip label="Delete">
-              <Button size="sm" variant="light" isIconOnly>
+              <Button
+                size="sm"
+                variant="light"
+                isIconOnly
+                onPress={() => onOpen("deleteChannel", { server, channel })}
+              >
                 <HiTrash className="hidden w-4 h-4 group-hover:block" />
               </Button>
             </ActionTooltip>

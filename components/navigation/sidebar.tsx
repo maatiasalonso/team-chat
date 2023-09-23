@@ -5,7 +5,6 @@ import { Action } from "./action";
 import { NavigationItem } from "./item";
 import { ActionDivider } from "../action-divider";
 import { ThemeSwitch } from "../theme-switch";
-import { ActionTooltip } from "../action-tooltip";
 import { NavigationUser } from "./user";
 
 export const Sidebar = async () => {
@@ -24,7 +23,7 @@ export const Sidebar = async () => {
   });
 
   return (
-    <div className="space-y-4 flex flex-col items-center h-full w-full dark:bg-[#1E1F22] py-3">
+    <div className="space-y-4 flex flex-col items-center h-full w-full dark:bg-[#1E1F22] bg-[#E3E5E8] py-3">
       <Action />
       <div className="w-10">
         <ActionDivider />

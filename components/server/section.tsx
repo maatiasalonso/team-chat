@@ -11,7 +11,7 @@ interface ServerSectionProps {
   label: string;
   role?: MemberRole;
   sectionType: "channels" | "members";
-  channelType: ChannelType;
+  channelType?: ChannelType;
   server?: ServerWithMembersWithProfiles;
 }
 
@@ -33,14 +33,14 @@ export const ServerSection = ({
             isIconOnly
             variant="light"
             size="sm"
-            onPress={() => onOpen("createChannel")}
+            onPress={() => onOpen("createChannel", { channelType })}
           >
             <HiPlus className="w-4 h-4" />
           </Button>
         </ActionTooltip>
       )}
       {role === MemberRole.ADMIN && sectionType === "members" && (
-        <ActionTooltip label="Create Channel" placement="top">
+        <ActionTooltip label="Manage Members" placement="top">
           <Button
             isIconOnly
             variant="light"

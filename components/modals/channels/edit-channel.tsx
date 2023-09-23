@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   ModalContent,
@@ -13,7 +13,7 @@ import {
   SelectItem,
 } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal-store";
 import { ChannelType } from "@prisma/client";
 import { ErrorMessage } from "@hookform/error-message";
@@ -23,21 +23,25 @@ interface FormInputs {
   channelType: string;
 }
 
-export const CreateChannelModal = () => {
+export const EditChannelModal = () => {
   const { isOpen, onClose, type, data } = useModal();
+  const { channel, server } = data;
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
   const {
     handleSubmit,
     register,
     formState: { errors },
+    setValue,
   } = useForm<FormInputs>({
     mode: "onChange",
+    defaultValues: {
+      channelName: channel?.name || "",
+      channelType: channel?.type || ChannelType.TEXT,
+    },
   });
 
-  const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
-  const params = useParams();
-
-  const isModalOpen = isOpen && type === "createChannel";
+  const isModalOpen = isOpen && type === "editChannel";
 
   const channelTypes = [
     { value: ChannelType.AUDIO },
@@ -47,10 +51,10 @@ export const CreateChannelModal = () => {
 
   const onSubmit = async (data: any) => {
     try {
-      data.serverId = params.serverId;
+      data.serverId = server?.id;
       setIsLoading(true);
-      const response = await fetch(`/api/channels`, {
-        method: "POST",
+      const response = await fetch(`/api/channels/${channel?.id}`, {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
@@ -69,6 +73,15 @@ export const CreateChannelModal = () => {
     }
   };
 
+  useEffect(() => {
+    if (channel) {
+      setValue("channelName", channel?.name);
+      setValue("channelType", channel?.type);
+    } else {
+      setValue("channelType", ChannelType.TEXT);
+    }
+  }, [channel, setValue]);
+
   const handleClose = () => {
     onClose();
   };
@@ -85,7 +98,7 @@ export const CreateChannelModal = () => {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1 text-center">
-                <h1 className="text-2xl mt-4">Create Channel</h1>
+                <h1 className="text-2xl mt-4">Edit Channel</h1>
               </ModalHeader>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <ModalBody>
@@ -115,6 +128,7 @@ export const CreateChannelModal = () => {
                     variant="bordered"
                     isRequired
                     {...register("channelType")}
+                    selectedKeys={[channel?.type || ChannelType.TEXT]}
                   >
                     {channelTypes.map((channel) => (
                       <SelectItem key={channel.value} value={channel.value}>
@@ -130,7 +144,7 @@ export const CreateChannelModal = () => {
                     isLoading={isLoading}
                     className="w-full sm:w-auto hover:bg-blue-500"
                   >
-                    {isLoading ? "Creating..." : "Create"}
+                    {isLoading ? "Saving..." : "Save"}
                   </Button>
                 </ModalFooter>
               </form>

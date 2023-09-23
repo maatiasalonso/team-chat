@@ -124,7 +124,7 @@ export const ServerHeader = ({ server, role }: ServerHeaderProps) => {
       <Dropdown className="w-[230px] dark:bg-[#1E1F22]">
         <DropdownTrigger className="focus:outline-none">
           <Button
-            className="w-full bg-zinc-900/10 text-md font-semibold rounded-none px-3 flex justify-between items-center h-12 border-neutral-200 dark:border-neutral-800 border-b-2 hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition"
+            className="w-full bg-zinc-200/50 dark:bg-zinc-900/10 text-md font-semibold rounded-none px-3 flex justify-between items-center h-12 border-neutral-200 dark:border-neutral-800 border-b-2 hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition"
             endContent={
               !isOpen ? (
                 <HiChevronDown className="w-5 h-5" />

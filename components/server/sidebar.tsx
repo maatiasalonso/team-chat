@@ -14,6 +14,7 @@ import {
 import SidebarDivider from "./divider";
 import { ServerSection } from "./section";
 import { ServerChannel } from "./channel";
+import { ServerMember } from "./member";
 
 interface ServerSiderbarProps {
   serverId: string;
@@ -175,6 +176,19 @@ export const ServerSidebar = async ({ serverId }: ServerSiderbarProps) => {
                 server={server}
                 role={role}
               />
+            ))}
+          </div>
+        )}
+        {!!members?.length && (
+          <div className="mb-2">
+            <ServerSection
+              sectionType="members"
+              role={role}
+              label="Members"
+              server={server}
+            />
+            {members.map((member) => (
+              <ServerMember key={member.id} member={member} server={server} />
             ))}
           </div>
         )}
