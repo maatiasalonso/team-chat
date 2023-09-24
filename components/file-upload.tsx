@@ -2,7 +2,8 @@
 
 import { Button, Image, Tooltip } from "@nextui-org/react";
 import { UploadDropzone } from "@/lib/uploadthing";
-import { HiX } from "react-icons/hi";
+import { HiDocument, HiX } from "react-icons/hi";
+import { Link } from "@nextui-org/link";
 
 interface FileUploadProps {
   onChange: (url?: string) => void;
@@ -11,6 +12,15 @@ interface FileUploadProps {
 }
 const FileUpload = ({ onChange, value, endpoint }: FileUploadProps) => {
   const fileType = value?.split(".").pop();
+
+  function trimStringWithEllipsis(input: string, maxLength: number): string {
+    if (input.length <= maxLength) {
+      return input;
+    }
+
+    const trimmedString = input.slice(0, maxLength - 3);
+    return `${trimmedString}...`;
+  }
 
   if (value && fileType !== "pdf") {
     return (
@@ -40,6 +50,46 @@ const FileUpload = ({ onChange, value, endpoint }: FileUploadProps) => {
           </Button>
         </Tooltip>
       </div>
+    );
+  }
+
+  if (value && fileType === "pdf") {
+    return (
+      <>
+        <div className="relative">
+          <Button
+            variant="flat"
+            color="secondary"
+            startContent={<HiDocument className="w-7 h-7" />}
+            as={Link}
+            href={value}
+            showAnchorIcon
+            target="_blank"
+            className="w-full justify-start"
+          >
+            {trimStringWithEllipsis(value, 45)}
+          </Button>
+          <Tooltip
+            placement="top"
+            showArrow
+            content="Remove file"
+            closeDelay={100}
+          >
+            <Button
+              isIconOnly
+              color="danger"
+              size="sm"
+              aria-label="Remove"
+              className="rounded-full absolute right-0 -m-2 z-50 hover:bg-danger-500/90 shadow-sm"
+              onClick={() => {
+                onChange("");
+              }}
+            >
+              <HiX />
+            </Button>
+          </Tooltip>
+        </div>
+      </>
     );
   }
   return (

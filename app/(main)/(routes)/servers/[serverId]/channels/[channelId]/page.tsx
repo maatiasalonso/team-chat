@@ -33,7 +33,7 @@ const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
   if (!channel || !member) redirect("/");
 
   return (
-    <>
+    <div className="h-full flex flex-col">
       <ChatHeader
         name={channel.name}
         serverId={channel.serverId}
@@ -49,7 +49,7 @@ const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
         }}
       />
       <SignOutButton />
-    </>
+    </div>
   );
 };
 

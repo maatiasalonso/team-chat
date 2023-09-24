@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^4.23.3",
+    "@emoji-mart/data": "^1.1.2",
+    "@emoji-mart/react": "^1.1.1",
     "@hookform/error-message": "^2.0.1",
     "@hookform/resolvers": "^3.3.1",
     "@nextui-org/button": "2.0.15",
@@ -32,6 +34,7 @@
     "@uploadthing/react": "^5.5.0",
     "autoprefixer": "10.4.15",
     "clsx": "^2.0.0",
+    "emoji-mart": "^5.5.2",
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
     "framer-motion": "^10.16.2",
