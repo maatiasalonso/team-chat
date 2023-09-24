@@ -1,7 +1,8 @@
 import { ChatHeader } from "@/components/chat/header";
+import { ChatInput } from "@/components/chat/input";
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
-import { redirectToSignIn } from "@clerk/nextjs";
+import { SignOutButton, redirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
 interface ChannelIdPageProps {
@@ -38,6 +39,16 @@ const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
         serverId={channel.serverId}
         type="channel"
       />
+      <ChatInput
+        name={channel.name}
+        type="channel"
+        apiUrl="/api/socket/messages"
+        query={{
+          channelId: channel.id,
+          serverId: channel.serverId,
+        }}
+      />
+      <SignOutButton />
     </>
   );
 };

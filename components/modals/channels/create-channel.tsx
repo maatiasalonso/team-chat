@@ -51,7 +51,7 @@ export const CreateChannelModal = () => {
 
   const onSubmit = async (data: any) => {
     try {
-      data.serverId = params.serverId;
+      data.serverId = params?.serverId;
       setIsLoading(true);
       const response = await fetch(`/api/channels`, {
         method: "POST",
@@ -78,7 +78,7 @@ export const CreateChannelModal = () => {
   };
 
   const capitalize = (str: string) => {
-    if (typeof str !== "string") return ""; // Ensure input is a string
+    if (typeof str !== "string") return "";
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
   };
 

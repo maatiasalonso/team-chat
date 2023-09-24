@@ -42,7 +42,7 @@ export const ServerChannel = ({
   };
 
   return (
-    <>
+    <div className="flex relative items-center group">
       <Button
         variant="light"
         startContent={Icon}
@@ -50,36 +50,36 @@ export const ServerChannel = ({
         onPress={() => onClick()}
       >
         {channel.name}
-        {channel.name !== "general" && role !== MemberRole.GUEST && (
-          <div className="flex items-center ml-auto">
-            <ActionTooltip label="Edit">
-              <Button
-                size="sm"
-                variant="light"
-                isIconOnly
-                onPress={() => onOpen("editChannel", { server, channel })}
-              >
-                <HiPencilAlt className="hidden w-4 h-4 group-hover:block" />
-              </Button>
-            </ActionTooltip>
-            <ActionTooltip label="Delete">
-              <Button
-                size="sm"
-                variant="light"
-                isIconOnly
-                onPress={() => onOpen("deleteChannel", { server, channel })}
-              >
-                <HiTrash className="hidden w-4 h-4 group-hover:block" />
-              </Button>
-            </ActionTooltip>
-          </div>
-        )}
-        {channel.name === "general" && (
-          <Button size="sm" variant="light" isIconOnly className="ml-auto">
-            <HiLockClosed className="w-4 h-4 group-hover:block" />
-          </Button>
-        )}
       </Button>
-    </>
+      {channel.name !== "general" && role !== MemberRole.GUEST && (
+        <div className="flex items-center ml-auto absolute right-0">
+          <ActionTooltip label="Edit">
+            <Button
+              size="sm"
+              variant="light"
+              isIconOnly
+              onPress={() => onOpen("editChannel", { server, channel })}
+            >
+              <HiPencilAlt className="hidden w-4 h-4 group-hover:block" />
+            </Button>
+          </ActionTooltip>
+          <ActionTooltip label="Delete">
+            <Button
+              size="sm"
+              variant="light"
+              isIconOnly
+              onPress={() => onOpen("deleteChannel", { server, channel })}
+            >
+              <HiTrash className="hidden w-4 h-4 group-hover:block" />
+            </Button>
+          </ActionTooltip>
+        </div>
+      )}
+      {channel.name === "general" && (
+        <Button size="sm" variant="light" isIconOnly className="ml-auto">
+          <HiLockClosed className="w-4 h-4 group-hover:block" />
+        </Button>
+      )}
+    </div>
   );
 };

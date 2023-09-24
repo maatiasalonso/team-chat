@@ -1,6 +1,7 @@
 import { HiHashtag } from "react-icons/hi";
 import { ChatMenu } from "./menu";
 import { ChatHeaderAvatar } from "./header-avatar";
+import { SocketIndicator } from "../socket-indicator";
 
 interface ChatHeaderProps {
   serverId: string;
@@ -21,6 +22,9 @@ export const ChatHeader = ({
       {type === "channel" && <HiHashtag className="w-4 h-4 ml-2" />}
       {type === "conversation" && <ChatHeaderAvatar imageUrl={imageUrl} />}
       <p className="ml-2 font-semibold">{name}</p>
+      <div className="ml-auto flex items-center">
+        <SocketIndicator />
+      </div>
     </div>
   );
 };
