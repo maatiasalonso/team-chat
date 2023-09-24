@@ -5,6 +5,9 @@ import { Input, Button } from "@nextui-org/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { HiEmojiHappy, HiPlus } from "react-icons/hi";
+import { EmojiPicker } from "../emoji-picker";
+import { useTheme } from "next-themes";
+import { useRouter } from "next/navigation";
 
 interface ChatInputProps {
   apiUrl: string;
@@ -15,8 +18,9 @@ interface ChatInputProps {
 
 export const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
   const { onOpen } = useModal();
-  const { control, handleSubmit, register, getValues, reset } = useForm();
+  const { handleSubmit, register, setValue, getValues } = useForm();
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const onSubmit = async (data: any) => {
     try {
@@ -37,12 +41,8 @@ export const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
       console.log(error);
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
-      handleSubmit(onSubmit)();
+      setValue("content", "");
+      router.refresh();
     }
   };
 
@@ -64,9 +64,11 @@ export const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
             </Button>
           }
           endContent={
-            <Button isIconOnly radius="full" size="sm" variant="light">
-              <HiEmojiHappy className="w-5 h-5" />
-            </Button>
+            <EmojiPicker
+              onChange={(emoji: string) =>
+                setValue("content", `${getValues("content") || ""} ${emoji}`)
+              }
+            />
           }
           placeholder={`Message ${type === "conversation" ? name : `#${name}`}`}
           {...register("content")}
