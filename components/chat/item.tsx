@@ -6,6 +6,7 @@ import {
   Card,
   CardBody,
   Image,
+  Input,
   Link,
   cn,
 } from "@nextui-org/react";
@@ -18,7 +19,8 @@ import {
   HiShieldExclamation,
   HiTrash,
 } from "react-icons/hi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 
 interface ChatItemProps {
   id: string;
@@ -53,6 +55,8 @@ export const ChatItem = ({
   socketUrl,
   socketQuery,
 }: ChatItemProps) => {
+  const { handleSubmit, register, setValue, getValues } = useForm();
+  const [isLoading, setIsLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const fileType = fileUrl?.split(".").pop();
@@ -72,6 +76,35 @@ export const ChatItem = ({
     const trimmedString = input.slice(0, maxLength - 3);
     return `${trimmedString}...`;
   }
+
+  const onSubmit = async (data: any) => {
+    try {
+      const url = `${socketUrl}/${id}?channelId=${socketQuery.channelId}&serverId=${socketQuery.serverId}`;
+
+      const res = await fetch(url, {
+        method: "PATCH",
+        body: JSON.stringify(data),
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsEditing(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  useEffect(() => {
+    setValue("content", content);
+  }, [content, setValue]);
 
   return (
     <div className="relative group flex items-center hover:bg-black/5 p-4 transition w-full">
@@ -146,11 +179,31 @@ export const ChatItem = ({
               )}
             </p>
           )}
+          {!fileUrl && isEditing && (
+            <>
+              <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="flex items-center w-full gap-x-2 pt-2"
+              >
+                <Input
+                  isDisabled={isLoading}
+                  placeholder="Edited message"
+                  {...register("content")}
+                ></Input>
+                <Button color="primary" isLoading={isLoading}>
+                  {isLoading ? "Saving..." : "Save"}
+                </Button>
+              </form>
+              <span className="text-xs mt-1 text-zinc-400">
+                Press escape to cancel, enter to save
+              </span>
+            </>
+          )}
         </div>
       </div>
       {canDeleteMessage && (
         <div className="hidden group-hover:flex items-center gap-x-2 absolute p-1 right-5">
-          {canEditMessage && (
+          {canEditMessage && !isEditing && (
             <ActionTooltip label="Edit" placement="top">
               <Button
                 isIconOnly
@@ -162,11 +215,13 @@ export const ChatItem = ({
               </Button>
             </ActionTooltip>
           )}
-          <ActionTooltip label="Delete" placement="top">
-            <Button isIconOnly variant="light" size="sm">
-              <HiTrash className="w-4 h-4" />
-            </Button>
-          </ActionTooltip>
+          {!isEditing && (
+            <ActionTooltip label="Delete" placement="top">
+              <Button isIconOnly variant="light" size="sm">
+                <HiTrash className="w-4 h-4" />
+              </Button>
+            </ActionTooltip>
+          )}
         </div>
       )}
     </div>

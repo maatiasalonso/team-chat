@@ -10,6 +10,7 @@ export type ModalType =
   | "editChannel"
   | "deleteChannel"
   | "messageFile"
+  | "deleteMessage"
   | "members"
   | "invite";
 
