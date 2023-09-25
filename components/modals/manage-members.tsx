@@ -22,7 +22,6 @@ import {
   HiCheck,
   HiChevronRight,
   HiDotsVertical,
-  HiQuestionMarkCircle,
   HiShieldCheck,
   HiShieldExclamation,
 } from "react-icons/hi";

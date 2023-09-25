@@ -9,6 +9,7 @@ import clsx from "clsx";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ModalProvider } from "@/components/providers/modal-provider";
 import { SocketProvider } from "@/components/providers/socket-provider";
+import { QueryProvider } from "@/components/providers/query-provider";
 
 export const metadata: Metadata = {
   title: {
@@ -48,9 +49,9 @@ export default function RootLayout({
             >
               <div className="relative flex flex-col h-screen dark:bg-[#313338]">
                 {/* <Navbar /> */}
-                <main className="w-full mx-auto flex-grow relative">
+                <main className="w-full mx-auto flex-grow relative overflow-y-auto">
                   <ModalProvider />
-                  {children}
+                  <QueryProvider>{children}</QueryProvider>
                 </main>
               </div>
             </Providers>

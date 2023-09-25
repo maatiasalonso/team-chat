@@ -4,9 +4,8 @@ import { useModal } from "@/hooks/use-modal-store";
 import { Input, Button } from "@nextui-org/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { HiEmojiHappy, HiPlus } from "react-icons/hi";
+import { HiPlus } from "react-icons/hi";
 import { EmojiPicker } from "../emoji-picker";
-import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 
 interface ChatInputProps {
@@ -51,13 +50,14 @@ export const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
       <form className="mx-4" onSubmit={handleSubmit(onSubmit)}>
         <Input
           isDisabled={isLoading}
+          size="lg"
           startContent={
             <Button
               isIconOnly
               radius="full"
               size="sm"
               color="secondary"
-              className="mr-2 h-6 w-8 min-w-unit-1"
+              className="mr-2 h-6 w-7 min-w-unit-1"
               onPress={() => onOpen("messageFile", { apiUrl, query })}
             >
               <HiPlus className="w-4 h-4" />
