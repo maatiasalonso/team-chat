@@ -21,6 +21,7 @@ import {
 } from "react-icons/hi";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useModal } from "@/hooks/use-modal-store";
 
 interface ChatItemProps {
   id: string;
@@ -55,10 +56,10 @@ export const ChatItem = ({
   socketUrl,
   socketQuery,
 }: ChatItemProps) => {
-  const { handleSubmit, register, setValue, getValues } = useForm();
+  const { handleSubmit, register, setValue } = useForm();
   const [isLoading, setIsLoading] = useState(false);
+  const { onOpen } = useModal();
   const [isEditing, setIsEditing] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
   const fileType = fileUrl?.split(".").pop();
   const isAdmin = currentMember.role === MemberRole.ADMIN;
   const isModerator = currentMember.role === MemberRole.MODERATOR;
@@ -79,6 +80,7 @@ export const ChatItem = ({
 
   const onSubmit = async (data: any) => {
     try {
+      setIsLoading(true);
       const url = `${socketUrl}/${id}?channelId=${socketQuery.channelId}&serverId=${socketQuery.serverId}`;
 
       const res = await fetch(url, {
@@ -87,6 +89,8 @@ export const ChatItem = ({
       });
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -190,7 +194,7 @@ export const ChatItem = ({
                   placeholder="Edited message"
                   {...register("content")}
                 ></Input>
-                <Button color="primary" isLoading={isLoading}>
+                <Button color="primary" isLoading={isLoading} type="submit">
                   {isLoading ? "Saving..." : "Save"}
                 </Button>
               </form>
@@ -217,7 +221,17 @@ export const ChatItem = ({
           )}
           {!isEditing && (
             <ActionTooltip label="Delete" placement="top">
-              <Button isIconOnly variant="light" size="sm">
+              <Button
+                isIconOnly
+                variant="light"
+                size="sm"
+                onPress={() =>
+                  onOpen("deleteMessage", {
+                    apiUrl: `${socketUrl}/${id}`,
+                    query: socketQuery,
+                  })
+                }
+              >
                 <HiTrash className="w-4 h-4" />
               </Button>
             </ActionTooltip>

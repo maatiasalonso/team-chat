@@ -8,7 +8,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponseServerIo
 ) {
-  console.log(req);
   if (req.method !== "DELETE" && req.method !== "PATCH") {
     return res.status(405).json({ error: "Method not allowed" });
   }
@@ -16,7 +15,6 @@ export default async function handler(
   try {
     const profile = await currentProfilePages(req);
     const { messageId, serverId, channelId } = req.query;
-    const { content } = JSON.parse(req.body);
 
     if (!profile) return res.status(405).json({ error: "Unauthorized" });
 
@@ -103,6 +101,8 @@ export default async function handler(
     if (req.method === "PATCH") {
       if (!isMessageOwner)
         return res.status(401).json({ error: "Unauthorized (3)" });
+
+      const { content } = JSON.parse(req.body);
 
       message = await db.message.update({
         where: {

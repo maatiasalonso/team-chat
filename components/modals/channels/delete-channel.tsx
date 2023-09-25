@@ -51,7 +51,7 @@ export const DeleteChannelModal = () => {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1 text-center">
-                <h1 className="text-2xl mt-4">Delete Channe</h1>
+                <h1 className="text-2xl mt-4">Delete Channel</h1>
               </ModalHeader>
               <ModalBody>
                 <p className="text-center font-bold">
