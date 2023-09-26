@@ -22,6 +22,8 @@ import {
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useModal } from "@/hooks/use-modal-store";
+import { useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 interface ChatItemProps {
   id: string;
@@ -59,6 +61,8 @@ export const ChatItem = ({
   const { handleSubmit, register, setValue } = useForm();
   const [isLoading, setIsLoading] = useState(false);
   const { onOpen } = useModal();
+  const params = useParams();
+  const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const fileType = fileUrl?.split(".").pop();
   const isAdmin = currentMember.role === MemberRole.ADMIN;
@@ -77,6 +81,14 @@ export const ChatItem = ({
     const trimmedString = input.slice(0, maxLength - 3);
     return `${trimmedString}...`;
   }
+
+  const onMemberClick = () => {
+    if (member.id === currentMember.id) {
+      return;
+    }
+
+    router.push(`/servers/${params?.serverId}/conversations/${member.id}`);
+  };
 
   const onSubmit = async (data: any) => {
     try {
@@ -117,12 +129,16 @@ export const ChatItem = ({
           <Avatar
             className="transition-transform w-7 h-7"
             src={member.profile.imageUrl}
+            onClick={onMemberClick}
           />
         </div>
         <div className="flex flex-col w-full">
           <div className="flex items-center gap-x-2">
             <div className="flex items-center">
-              <p className="font-semibold text-sm hover:underline cursor-pointer mr-2">
+              <p
+                className="font-semibold text-sm hover:underline cursor-pointer mr-2"
+                onClick={onMemberClick}
+              >
                 {member.profile.name}
               </p>
               <ActionTooltip label={member.role}>
