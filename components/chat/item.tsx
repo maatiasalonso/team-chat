@@ -141,7 +141,7 @@ export const ChatItem = ({
               >
                 {member.profile.name}
               </p>
-              <ActionTooltip label={member.role}>
+              <ActionTooltip label={member.role} placement="top">
                 {roleIconMap[member.role]}
               </ActionTooltip>
             </div>

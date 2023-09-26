@@ -9,6 +9,7 @@ import { LuServerCrash } from "react-icons/lu";
 import { Fragment } from "react";
 import { MessageWithMemberWithProfile } from "@/types";
 import { ChatItem } from "./item";
+import { useChatSocket } from "@/hooks/use-chat-socket";
 
 interface ChatMessagesProps {
   name: string;
@@ -36,6 +37,9 @@ export const ChatMessages = ({
   type,
 }: ChatMessagesProps) => {
   const queryKey = `chat:${chatId}`;
+  const addKey = `chat:${chatId}:message`;
+  const updateKey = `chat:${chatId}:messages:update`;
+
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useChatQuery({
       queryKey,
@@ -43,6 +47,7 @@ export const ChatMessages = ({
       paramKey,
       paramValue,
     });
+  useChatSocket({ queryKey, addKey, updateKey });
 
   if (status === "loading") {
     return (
