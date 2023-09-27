@@ -16,8 +16,9 @@ export const ChatVideoButton = () => {
   const tooltipLabel = isVideo ? "End video call" : "Start video call";
 
   const onClick = () => {
-    console.log("onClick");
-    const url = `${pathName}?video=${{ video: isVideo ? undefined : true }}`;
+    const videoPath = `?video=${isVideo ? undefined : true}`;
+    const url = `${pathName}${!isVideo ? videoPath : ""}`;
+
     router.push(url);
   };
   return (
