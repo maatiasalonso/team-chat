@@ -112,6 +112,9 @@ export const ChatItem = ({
 
       await fetch(`${window.location.origin}/${socketUrl}`, {
         method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(data),
       });
     } catch (error) {
