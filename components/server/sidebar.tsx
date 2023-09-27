@@ -1,4 +1,3 @@
-"use client";
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
 import { ChannelType, MemberRole } from "@prisma/client";
@@ -16,9 +15,8 @@ import SidebarDivider from "./divider";
 import { ServerSection } from "./section";
 import { ServerChannel } from "./channel";
 import { ServerMember } from "./member";
-import { useEffect, useState } from "react";
 
-interface ServerSidebarProps {
+interface ServerSiderbarProps {
   serverId: string;
 }
 
@@ -34,75 +32,53 @@ const roleIconMap = {
   [MemberRole.ADMIN]: <HiShieldExclamation className="w-4 h-4 text-danger" />,
 };
 
-const ServerSidebar: React.FC<ServerSidebarProps> = ({ serverId }) => {
-  const [serverData, setServerData] = useState<any>(null);
+export const ServerSidebar = async ({ serverId }: ServerSiderbarProps) => {
+  const profile = await currentProfile();
 
-  useEffect(() => {
-    async function fetchData() {
-      const profile = await currentProfile();
+  if (!profile) return redirect("/");
 
-      if (!profile) {
-        return redirect("/");
-      }
-
-      const server = await db.server.findUnique({
-        where: {
-          id: serverId,
+  const server = await db.server.findUnique({
+    where: {
+      id: serverId,
+    },
+    include: {
+      channels: {
+        orderBy: {
+          createdAt: "asc",
         },
+      },
+      members: {
         include: {
-          channels: {
-            orderBy: {
-              createdAt: "asc",
-            },
-          },
-          members: {
-            include: {
-              profile: true,
-            },
-            orderBy: {
-              role: "asc",
-            },
-          },
+          profile: true,
         },
-      });
+        orderBy: {
+          role: "asc",
+        },
+      },
+    },
+  });
 
-      const textChannels = server?.channels.filter(
-        (channel) => channel.type === ChannelType.TEXT
-      );
+  const textChannels = server?.channels.filter(
+    (channel) => channel.type === ChannelType.TEXT
+  );
 
-      const audioChannels = server?.channels.filter(
-        (channel) => channel.type === ChannelType.AUDIO
-      );
+  const audioChannels = server?.channels.filter(
+    (channel) => channel.type === ChannelType.AUDIO
+  );
 
-      const videoChannels = server?.channels.filter(
-        (channel) => channel.type === ChannelType.VIDEO
-      );
+  const videoChannels = server?.channels.filter(
+    (channel) => channel.type === ChannelType.VIDEO
+  );
 
-      const members = server?.members.filter(
-        (member) => member.profileId !== profile.id
-      );
+  const members = server?.members.filter(
+    (member) => member.profileId !== profile.id
+  );
 
-      if (!server) return redirect("/");
+  if (!server) return redirect("/");
 
-      const role = server.members.find(
-        (member) => member.profileId === profile.id
-      )?.role;
-
-      setServerData({
-        server,
-        textChannels,
-        audioChannels,
-        videoChannels,
-        members,
-        role,
-      });
-    }
-
-    fetchData();
-  }, [serverId]);
-
-  const { server, textChannels, audioChannels, videoChannels, members, role } =
-    serverData;
+  const role = server.members.find(
+    (member) => member.profileId === profile.id
+  )?.role;
 
   return (
     <div className="flex flex-col h-full w-full dark:bg-[#2B2D31] bg-[#F2F3F5]">
@@ -113,37 +89,37 @@ const ServerSidebar: React.FC<ServerSidebarProps> = ({ serverId }) => {
             {
               label: "Text Channels",
               type: "channel",
-              data: textChannels?.map((channel: any) => ({
+              data: textChannels?.map((channel) => ({
                 id: channel.id,
                 name: channel.name,
-                icon: (iconMap as any)[channel.type],
+                icon: iconMap[channel.type],
               })),
             },
             {
               label: "Voice Channels",
               type: "channel",
-              data: audioChannels?.map((channel: any) => ({
+              data: audioChannels?.map((channel) => ({
                 id: channel.id,
                 name: channel.name,
-                icon: (iconMap as any)[channel.type],
+                icon: iconMap[channel.type],
               })),
             },
             {
               label: "Video Channels",
               type: "channel",
-              data: videoChannels?.map((channel: any) => ({
+              data: videoChannels?.map((channel) => ({
                 id: channel.id,
                 name: channel.name,
-                icon: (iconMap as any)[channel.type],
+                icon: iconMap[channel.type],
               })),
             },
             {
               label: "Members",
               type: "member",
-              data: members?.map((member: any) => ({
+              data: members?.map((member) => ({
                 id: member.id,
                 name: member.profile.name,
-                icon: (roleIconMap as any)[member.role],
+                icon: roleIconMap[member.role],
               })),
             },
           ]}
@@ -157,7 +133,7 @@ const ServerSidebar: React.FC<ServerSidebarProps> = ({ serverId }) => {
               role={role}
               label="Text Channels"
             />
-            {textChannels.map((channel: any) => (
+            {textChannels.map((channel) => (
               <ServerChannel
                 key={channel.id}
                 channel={channel}
@@ -175,7 +151,7 @@ const ServerSidebar: React.FC<ServerSidebarProps> = ({ serverId }) => {
               role={role}
               label="Voice Channels"
             />
-            {audioChannels.map((channel: any) => (
+            {audioChannels.map((channel) => (
               <ServerChannel
                 key={channel.id}
                 channel={channel}
@@ -193,7 +169,7 @@ const ServerSidebar: React.FC<ServerSidebarProps> = ({ serverId }) => {
               role={role}
               label="Video Channels"
             />
-            {videoChannels.map((channel: any) => (
+            {videoChannels.map((channel) => (
               <ServerChannel
                 key={channel.id}
                 channel={channel}
@@ -211,7 +187,7 @@ const ServerSidebar: React.FC<ServerSidebarProps> = ({ serverId }) => {
               label="Members"
               server={server}
             />
-            {members.map((member: any) => (
+            {members.map((member) => (
               <ServerMember key={member.id} member={member} server={server} />
             ))}
           </div>
@@ -220,5 +196,3 @@ const ServerSidebar: React.FC<ServerSidebarProps> = ({ serverId }) => {
     </div>
   );
 };
-
-export default ServerSidebar;
