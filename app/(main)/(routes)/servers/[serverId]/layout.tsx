@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { redirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
-export const ServerIdLayout = async ({
+const ServerIdLayout = async ({
   children,
   params,
 }: {
@@ -37,3 +37,5 @@ export const ServerIdLayout = async ({
     </div>
   );
 };
+
+export default ServerIdLayout;
