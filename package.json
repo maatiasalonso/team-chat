@@ -57,7 +57,6 @@
     "socket.io-client": "^4.7.2",
     "tailwind-variants": "^0.1.13",
     "tailwindcss": "3.3.3",
-    "typescript": "5.0.4",
     "uploadthing": "^5.5.3",
     "uuid": "^9.0.0",
     "zustand": "^4.4.1"
@@ -66,6 +65,7 @@
     "@types/uuid": "^9.0.3",
     "bufferutil": "^4.0.7",
     "prisma": "^5.2.0",
+    "typescript": "^5.2.2",
     "utf-8-validate": "^5.0.10"
   }
 }
