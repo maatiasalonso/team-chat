@@ -28,7 +28,7 @@ export const Sidebar = async () => {
       <div className="w-10">
         <ActionDivider />
       </div>
-      <div className="flex-1 w-full space-y-4">
+      <div className="flex-1 w-full space-y-4 overflow-y-auto scrollbar-hide">
         {servers.map((server: any) => (
           <div key={server.id}>
             <NavigationItem
