@@ -4,7 +4,7 @@ import { ChatMessages } from "@/components/chat/messages";
 import { MediaRoom } from "@/components/media-room";
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
-import { SignOutButton, redirectToSignIn } from "@clerk/nextjs";
+import { redirectToSignIn } from "@clerk/nextjs";
 import { ChannelType } from "@prisma/client";
 import { redirect } from "next/navigation";
 
@@ -73,7 +73,6 @@ const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
       {channel.type === ChannelType.VIDEO && (
         <MediaRoom chatId={channel.id} video={true} audio={true} />
       )}
-      <SignOutButton />
     </div>
   );
 };

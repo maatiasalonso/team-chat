@@ -57,7 +57,7 @@ export const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
 
   return (
     <>
-      <form className="mx-4" onSubmit={handleSubmit(onSubmit)}>
+      <form className="mx-4 mb-5" onSubmit={handleSubmit(onSubmit)}>
         <Input
           isDisabled={isLoading}
           size="lg"
