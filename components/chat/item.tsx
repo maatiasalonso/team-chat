@@ -93,9 +93,21 @@ export const ChatItem = ({
   const onSubmit = async (data: any) => {
     try {
       setIsLoading(true);
-      const url = `${socketUrl}/${id}?channelId=${socketQuery.channelId}&serverId=${socketQuery.serverId}`;
+      const channelId = socketQuery.channelId
+        ? `channelId=${encodeURIComponent(socketQuery.channelId)}`
+        : null;
+      const serverId = socketQuery.serverId
+        ? `serverId=${encodeURIComponent(socketQuery.serverId)}`
+        : null;
+      const conversationId = socketQuery.conversationId
+        ? `conversationId=${encodeURIComponent(socketQuery.conversationId)}`
+        : null;
 
-      const res = await fetch(url, {
+      socketUrl = `${socketUrl}/${id}?${channelId && channelId}&${
+        serverId && serverId
+      }&${conversationId && conversationId}`;
+
+      await fetch(`${window.location.origin}/${socketUrl}`, {
         method: "PATCH",
         body: JSON.stringify(data),
       });

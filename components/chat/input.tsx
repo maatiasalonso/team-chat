@@ -25,11 +25,21 @@ export const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
     try {
       setIsLoading(true);
 
-      apiUrl = `${apiUrl}?channelId=${encodeURIComponent(
-        query.channelId
-      )}&serverId=${encodeURIComponent(query.serverId)}`;
+      const channelId = query.channelId
+        ? `channelId=${encodeURIComponent(query.channelId)}`
+        : null;
+      const serverId = query.serverId
+        ? `serverId=${encodeURIComponent(query.serverId)}`
+        : null;
+      const conversationId = query.conversationId
+        ? `conversationId=${encodeURIComponent(query.conversationId)}`
+        : null;
 
-      const response = await fetch(`${apiUrl}`, {
+      apiUrl = `${apiUrl}?${channelId && channelId}&${serverId && serverId}&${
+        conversationId && conversationId
+      }`;
+
+      await fetch(`${apiUrl}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
