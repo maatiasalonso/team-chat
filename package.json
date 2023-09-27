@@ -32,7 +32,6 @@
     "@react-aria/visually-hidden": "^3.8.3",
     "@tanstack/react-query": "^4.35.3",
     "@types/node": "20.5.7",
-    "@types/react": "18.2.8",
     "@types/react-dom": "18.2.7",
     "@uploadthing/react": "^5.5.0",
     "autoprefixer": "10.4.15",
@@ -62,6 +61,7 @@
     "zustand": "^4.4.1"
   },
   "devDependencies": {
+    "@types/react": "^18.2.23",
     "@types/uuid": "^9.0.3",
     "bufferutil": "^4.0.7",
     "prisma": "^5.2.0",
