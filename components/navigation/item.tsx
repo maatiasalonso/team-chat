@@ -37,7 +37,7 @@ export const NavigationItem = ({
         <Button
           className={cn(
             "w-12 h-12 rounded-full hover:rounded-2xl mx-auto",
-            params.serverId === id && "rounded-2xl"
+            params?.serverId === id && "rounded-2xl"
           )}
           isIconOnly
           onClick={onClick}
