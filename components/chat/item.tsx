@@ -93,12 +93,15 @@ export const ChatItem = ({
   const onSubmit = async (data: any) => {
     try {
       setIsLoading(true);
+
       const channelId = socketQuery.channelId
         ? `channelId=${encodeURIComponent(socketQuery.channelId)}`
         : null;
+
       const serverId = socketQuery.serverId
         ? `serverId=${encodeURIComponent(socketQuery.serverId)}`
         : null;
+
       const conversationId = socketQuery.conversationId
         ? `conversationId=${encodeURIComponent(socketQuery.conversationId)}`
         : null;
