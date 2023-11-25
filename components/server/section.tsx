@@ -9,7 +9,7 @@ import { useModal } from "@/hooks/use-modal-store";
 
 interface ServerSectionProps {
   label: string;
-  role?: MemberRole;
+  role: MemberRole;
   sectionType: "channels" | "members";
   channelType?: ChannelType;
   server?: ServerWithMembersWithProfiles;

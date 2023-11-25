@@ -31,6 +31,7 @@ interface ServerSearchProps {
       | undefined;
   }[];
 }
+
 export const ServerSearch = ({ data }: ServerSearchProps) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const [value, setValue] = useState("");
@@ -46,6 +47,7 @@ export const ServerSearch = ({ data }: ServerSearchProps) => {
     };
 
     document.addEventListener("keydown", down);
+
     return () => document.removeEventListener("keydown", down);
   }, [onOpenChange]);
 
@@ -55,6 +57,7 @@ export const ServerSearch = ({ data }: ServerSearchProps) => {
     const filteredItems = data.filter((item) =>
       item.name.toLowerCase().includes(value.toLowerCase())
     );
+
     return { label, type, data: filteredItems };
   });
 
