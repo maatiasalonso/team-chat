@@ -8,115 +8,26 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from "@nextui-org/react";
-import {
-  HiChevronDown,
-  HiUserAdd,
-  HiCog,
-  HiUsers,
-  HiPlusCircle,
-  HiTrash,
-  HiLogout,
-  HiChevronUp,
-} from "react-icons/hi";
+import { HiChevronDown, HiChevronUp } from "react-icons/hi";
 import { MemberRole } from "@prisma/client";
 import { useState } from "react";
-import { useModal } from "@/hooks/use-modal-store";
+import { ModalType, useModal } from "@/hooks/use-modal-store";
+import { useRoleActions } from "@/components/server/data/role/actions";
 
 interface ServerHeaderProps {
   server: ServerWithMembersWithProfiles;
-  role?: MemberRole;
+  role: MemberRole;
 }
 
 export const ServerHeader = ({ server, role }: ServerHeaderProps) => {
-  const isAdmin = role === MemberRole.ADMIN;
-  const isModerator = isAdmin || role === MemberRole.MODERATOR;
   const [isOpen, setIsOpen] = useState(false);
   const { onOpen } = useModal();
-
-  const items = [
-    ...(isModerator
-      ? [
-          {
-            key: "invite-people",
-            label: "Invite People",
-            class: "text-indigo-600 dark:text-indigo-400",
-            icon: <HiUserAdd className="w-5 h-5" />,
-          },
-        ]
-      : []),
-    ...(isAdmin
-      ? [
-          {
-            key: "server-settings",
-            label: "Server Settings",
-            icon: <HiCog className="w-5 h-5" />,
-          },
-        ]
-      : []),
-    ...(isAdmin
-      ? [
-          {
-            key: "manage-members",
-            label: "Manage Members",
-            icon: <HiUsers className="w-5 h-5" />,
-          },
-        ]
-      : []),
-    ...(isModerator
-      ? [
-          {
-            key: "create-channel",
-            label: "Create Channel",
-            icon: <HiPlusCircle className="w-5 h-5" />,
-            divider: true,
-          },
-        ]
-      : []),
-    ...(isAdmin
-      ? [
-          {
-            key: "delete-server",
-            label: "Delete Server",
-            icon: <HiTrash className="w-5 h-5" />,
-            class: "text-danger",
-          },
-        ]
-      : []),
-    ...(!isAdmin
-      ? [
-          {
-            key: "leave-server",
-            label: "Leave Server",
-            icon: <HiLogout className="w-5 h-5" />,
-          },
-        ]
-      : []),
-  ];
+  const roleActions = useRoleActions({ role });
 
   const handleAction = (key: any) => {
-    if (key === "server-settings") {
-      onOpen("editServer", { server });
-    }
+    const action = roleActions.find((action) => action!.key === key);
 
-    if (key === "manage-members") {
-      onOpen("members", { server });
-    }
-
-    if (key === "invite-people") {
-      onOpen("invite", { server });
-    }
-
-    if (key === "create-channel") {
-      onOpen("createChannel", { server });
-    }
-
-    if (key === "leave-server") {
-      onOpen("leaveServer", { server });
-    }
-
-    if (key === "delete-server") {
-      onOpen("deleteServer", { server });
-    }
+    if (action) onOpen(action.method as ModalType, { server });
   };
 
   return (
@@ -139,7 +50,7 @@ export const ServerHeader = ({ server, role }: ServerHeaderProps) => {
         </DropdownTrigger>
         <DropdownMenu
           aria-label="Static Actions"
-          items={items}
+          items={roleActions}
           onAction={(key) => handleAction(key)}
         >
           {(item: any) => (
