@@ -60,7 +60,7 @@ export const ChatMessages = ({
     count: data?.pages?.[0]?.items?.length ?? 0,
   });
 
-  if (status === "loading") {
+  if (status === "pending") {
     return (
       <div className="flex flex-col flex-1 justify-center items-center">
         <Spinner color="default">Loading messages...</Spinner>
