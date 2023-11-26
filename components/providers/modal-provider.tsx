@@ -1,17 +1,17 @@
 "use client";
 
-import { CreateServerModal } from "@/components/modals/servers/create-server";
 import { useEffect, useState } from "react";
-import { InvitePeopleModal } from "@/components/modals/invite-people";
-import { EditServerModal } from "@/components/modals/servers/edit-server";
-import { ManageMembersModal } from "@/components/modals/manage-members";
 import { CreateChannelModal } from "@/components/modals/channels/create-channel";
-import { LeaveServerModal } from "../modals/servers/leave-server";
-import { DeleteServerModal } from "../modals/servers/delete-server";
-import { DeleteChannelModal } from "../modals/channels/delete-channel";
-import { EditChannelModal } from "../modals/channels/edit-channel";
-import { MessageFileModal } from "../modals/channels/message-file";
-import { DeleteMessageModal } from "../modals/channels/delete-message";
+import { CreateServerModal } from "@/components/modals/servers/create-server";
+import { DeleteChannelModal } from "@/components/modals/channels/delete-channel";
+import { DeleteMessageModal } from "@/components/modals/channels/delete-message";
+import { DeleteServerModal } from "@/components/modals/servers/delete-server";
+import { EditChannelModal } from "@/components/modals/channels/edit-channel";
+import { EditServerModal } from "@/components/modals/servers/edit-server";
+import { InvitePeopleModal } from "@/components/modals/invite-people";
+import { LeaveServerModal } from "@/components/modals/servers/leave-server";
+import { ManageMembersModal } from "@/components/modals/manage-members";
+import { MessageFileModal } from "@/components/modals/channels/message-file";
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -24,17 +24,17 @@ export const ModalProvider = () => {
 
   return (
     <>
-      <CreateServerModal />
-      <EditServerModal />
-      <LeaveServerModal />
-      <DeleteServerModal />
-      <ManageMembersModal />
       <CreateChannelModal />
-      <EditChannelModal />
+      <CreateServerModal />
       <DeleteChannelModal />
-      <InvitePeopleModal />
-      <MessageFileModal />
       <DeleteMessageModal />
+      <DeleteServerModal />
+      <EditChannelModal />
+      <EditServerModal />
+      <InvitePeopleModal />
+      <LeaveServerModal />
+      <ManageMembersModal />
+      <MessageFileModal />
     </>
   );
 };
