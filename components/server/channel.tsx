@@ -7,17 +7,31 @@ import {
   HiHashtag,
   HiLockClosed,
   HiMicrophone,
-  HiPencilAlt,
+  HiOutlineDotsVertical,
+  HiPencil,
   HiTrash,
   HiVideoCamera,
 } from "react-icons/hi";
 import { ActionTooltip } from "../action-tooltip";
-import { useModal } from "@/hooks/use-modal-store";
+import { ModalType, useModal } from "@/hooks/use-modal-store";
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  cn,
+} from "@nextui-org/react";
 
 interface ServerChannelProps {
   channel: Channel;
   server: Server;
   role?: MemberRole;
+}
+
+interface ServerAction {
+  label: string;
+  icon: React.ReactNode;
+  modal: ModalType;
 }
 
 const iconMap = {
@@ -41,44 +55,54 @@ export const ServerChannel = ({
     router.push(`/servers/${params?.serverId}/channels/${channel.id}`);
   };
 
+  const serverActions: ServerAction[] = [
+    {
+      label: "Edit",
+      icon: <HiPencil className="w-4 h-4" />,
+      modal: "editChannel",
+    },
+    {
+      label: "Delete",
+      icon: <HiTrash className="w-4 h-4" />,
+      modal: "deleteChannel",
+    },
+  ];
+
   return (
     <div className="flex relative items-center group">
       <Button
         variant="light"
         startContent={Icon}
-        className="w-full justify-start mt-1 font-semibold pr-1"
+        className="w-full justify-start mt-0.5 font-semibold pr-1"
         onPress={() => onClick()}
       >
         {channel.name}
       </Button>
       {channel.name !== "general" && role !== MemberRole.GUEST && (
-        <div className="flex items-center ml-auto absolute right-0">
-          <ActionTooltip label="Edit">
-            <Button
-              size="sm"
-              variant="light"
-              isIconOnly
-              onPress={() => onOpen("editChannel", { server, channel })}
-            >
-              <HiPencilAlt className="hidden w-4 h-4 group-hover:block" />
+        <Dropdown>
+          <DropdownTrigger>
+            <Button variant="light" isIconOnly size="sm">
+              <HiOutlineDotsVertical />
             </Button>
-          </ActionTooltip>
-          <ActionTooltip label="Delete">
-            <Button
-              size="sm"
-              variant="light"
-              isIconOnly
-              onPress={() => onOpen("deleteChannel", { server, channel })}
-            >
-              <HiTrash className="hidden w-4 h-4 group-hover:block" />
-            </Button>
-          </ActionTooltip>
-        </div>
-      )}
-      {channel.name === "general" && (
-        <Button size="sm" variant="light" isIconOnly className="ml-auto">
-          <HiLockClosed className="w-4 h-4 group-hover:block" />
-        </Button>
+          </DropdownTrigger>
+          <DropdownMenu aria-label="Server Actions" items={serverActions}>
+            {(item: ServerAction) => (
+              <DropdownItem
+                key={item.label}
+                color={
+                  cn(
+                    item.modal === "deleteChannel" ? "danger" : "default"
+                  ) as any
+                }
+                className={cn(item.modal === "deleteChannel" && "text-danger")}
+                onPress={() => onOpen(item.modal, { server, channel })}
+                startContent={item.icon}
+              >
+                {item.label}
+              </DropdownItem>
+            )}
+          </DropdownMenu>
+        </Dropdown>
       )}
     </div>
   );

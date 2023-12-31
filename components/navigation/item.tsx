@@ -36,7 +36,7 @@ export const NavigationItem = ({
         />
         <Button
           className={cn(
-            "w-12 h-12 rounded-full hover:rounded-2xl mx-auto",
+            "w-12 h-12 rounded-full hover:rounded-2xl mx-auto transition-all",
             params?.serverId === id && "rounded-2xl"
           )}
           isIconOnly
@@ -50,7 +50,7 @@ export const NavigationItem = ({
             alt="Channel"
             isZoomed
             isBlurred
-            className="h-14"
+            className="h-14 object-cover"
           />
         </Button>
       </div>

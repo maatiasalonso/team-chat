@@ -28,20 +28,23 @@ const FileUpload = ({ onChange, value, endpoint }: FileUploadProps) => {
         <Image
           src={value}
           alt="Server Image"
-          className="rounded-full w-40 h-40"
+          className="rounded-full w-40 h-40 object-cover"
+          width={1000}
+          height={1000}
         />
         <Tooltip
           placement="top"
           showArrow
-          content="Remove image"
+          content="Remove"
           closeDelay={100}
+          color="danger"
         >
           <Button
             isIconOnly
             color="danger"
             size="sm"
             aria-label="Remove"
-            className="rounded-full absolute top-0 right-0 z-50 hover:bg-danger-500/90 shadow-sm"
+            className="rounded-full absolute top-0 right-0 z-50 hover:opacity-40 transition-all shadow-sm"
             onClick={() => {
               onChange("");
             }}

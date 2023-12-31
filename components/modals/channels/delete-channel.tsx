@@ -51,13 +51,13 @@ export const DeleteChannelModal = () => {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1 text-center">
-                <h1 className="text-2xl mt-4">Delete Channel</h1>
+                <h1 className="text-3xl mt-4">Delete Channel</h1>
               </ModalHeader>
               <ModalBody>
-                <p className="text-center font-bold">
+                <p className="text-center font-bold text-lg">
                   Are you sure you want to do this?
                 </p>
-                <p className="text-center text-danger">
+                <p className="text-center text-danger text-xs">
                   <span className="font-bold">#{channel?.name}</span> will be
                   permanently deleted.
                 </p>
@@ -65,7 +65,7 @@ export const DeleteChannelModal = () => {
               <ModalFooter>
                 <Button
                   isDisabled={isLoading}
-                  className="w-full sm:w-auto hover:bg-zinc-500/90"
+                  className="w-full sm:w-auto hover:opacity-40 transition-all"
                   onPress={() => onClose()}
                 >
                   Cancel
@@ -73,10 +73,10 @@ export const DeleteChannelModal = () => {
                 <Button
                   color="danger"
                   isLoading={isLoading}
-                  className="w-full sm:w-auto hover:bg-danger-500/90"
+                  className="w-full sm:w-auto hover:opacity-40 transition-all"
                   onPress={() => onClick()}
                 >
-                  {isLoading ? "Deleting server..." : "Confirm"}
+                  {isLoading ? "Deleting..." : "Delete"}
                 </Button>
               </ModalFooter>
             </>
