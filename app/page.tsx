@@ -156,14 +156,13 @@ const Hero = () => {
           <div className='w-full max-w-sm space-y-2'>
             <form className='flex items-center space-x-2'>
               <Input
-                className='flex-1 h-auto max-w-lg'
+                className='flex-1 max-w-lg max-h-10'
                 placeholder='Enter your email'
                 type='email'
-                size='sm'
               />
               <Tooltip content='This is a dummy button' closeDelay={300}>
                 <Button
-                  className='h-auto text-black bg-white hover:bg-zinc-200'
+                  className='text-black bg-white hover:bg-zinc-200'
                   type='submit'
                 >
                   Get Started
