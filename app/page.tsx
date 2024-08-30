@@ -159,6 +159,7 @@ const Hero = () => {
                 className='flex-1 max-w-lg'
                 placeholder='Enter your email'
                 type='email'
+                size='sm'
               />
               <Tooltip content='This is a dummy button' closeDelay={300}>
                 <Button
