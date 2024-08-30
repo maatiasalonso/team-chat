@@ -1,7 +1,7 @@
-import { currentProfile } from "@/lib/current-profile";
-import { db } from "@/lib/db";
-import { redirectToSignIn } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
+import InitialModal from '@/components/modals/initial';
+import { currentProfile } from '@/lib/current-profile';
+import { db } from '@/lib/db';
+import { redirect } from 'next/navigation';
 
 interface ServerIdPageProps {
   params: {
@@ -9,10 +9,10 @@ interface ServerIdPageProps {
   };
 }
 
-const ServerIdPage = async ({ params }: ServerIdPageProps) => {
+const ServersPage = async ({ params }: ServerIdPageProps) => {
   const profile = await currentProfile();
 
-  if (!profile) return redirectToSignIn();
+  if (!profile) return redirect('/');
 
   const server = await db.server.findUnique({
     where: {
@@ -26,20 +26,24 @@ const ServerIdPage = async ({ params }: ServerIdPageProps) => {
     include: {
       channels: {
         where: {
-          name: "general",
+          name: 'general',
         },
         orderBy: {
-          createdAt: "asc",
+          createdAt: 'asc',
         },
       },
     },
   });
 
+  if (!server) {
+    return <InitialModal />;
+  }
+
   const initialChannel = server?.channels[0];
 
-  if (initialChannel?.name !== "general") return null;
+  if (initialChannel?.name !== 'general') return null;
 
   return redirect(`/servers/${params.serverId}/channels/${initialChannel?.id}`);
 };
 
-export default ServerIdPage;
+export default ServersPage;
