@@ -156,7 +156,10 @@ const Hero = () => {
           <div className='w-full max-w-sm space-y-2'>
             <form className='flex items-center space-x-2'>
               <Input
-                className='flex-1 max-w-lg max-h-10'
+                className='flex-1 max-w-lg'
+                classNames={{
+                  inputWrapper: 'max-h-10',
+                }}
                 placeholder='Enter your email'
                 type='email'
               />
