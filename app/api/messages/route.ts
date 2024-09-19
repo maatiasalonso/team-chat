@@ -22,10 +22,10 @@ export async function GET(req: Request) {
     if (cursor !== "undefined") {
       messages = await db.message.findMany({
         take: MESSAGES_BATCH,
-        skip: 1,
-        cursor: {
-          id: cursor!,
-        },
+        // skip: 1,
+        // cursor: {
+        //   id: cursor!,
+        // },
         where: {
           channelId,
         },

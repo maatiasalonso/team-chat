@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Avatar,
@@ -9,21 +9,21 @@ import {
   Input,
   Link,
   cn,
-} from "@nextui-org/react";
-import { Member, MemberRole, Profile } from "@prisma/client";
-import { ActionTooltip } from "../action-tooltip";
+} from '@nextui-org/react';
+import { Member, MemberRole, Profile } from '@prisma/client';
+import { ActionTooltip } from '../action-tooltip';
 import {
   HiDocument,
   HiPencil,
   HiShieldCheck,
   HiShieldExclamation,
   HiTrash,
-} from "react-icons/hi";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { useModal } from "@/hooks/use-modal-store";
-import { useParams } from "next/navigation";
-import { useRouter } from "next/navigation";
+} from 'react-icons/hi';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useModal } from '@/hooks/use-modal-store';
+import { useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 interface ChatItemProps {
   id: string;
@@ -42,8 +42,8 @@ interface ChatItemProps {
 
 const roleIconMap = {
   GUEST: null,
-  MODERATOR: <HiShieldCheck className="w-4 h-4 text-indigo-500" />,
-  ADMIN: <HiShieldExclamation className="w-4 h-4 text-danger" />,
+  MODERATOR: <HiShieldCheck className='w-4 h-4 text-indigo-500' />,
+  ADMIN: <HiShieldExclamation className='w-4 h-4 text-danger' />,
 };
 
 export const ChatItem = ({
@@ -64,13 +64,13 @@ export const ChatItem = ({
   const params = useParams();
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
-  const fileType = fileUrl?.split(".").pop();
+  const fileType = fileUrl?.split('.').pop();
   const isAdmin = currentMember.role === MemberRole.ADMIN;
   const isModerator = currentMember.role === MemberRole.MODERATOR;
   const isOwner = currentMember.id === member.id;
   const canDeleteMessage = !deleted && (isAdmin || isModerator || isOwner);
   const canEditMessage = !deleted && isOwner && !fileUrl;
-  const isPDF = fileType === "pdf" && fileUrl;
+  const isPDF = fileType === 'pdf' && fileUrl;
   const isImage = !isPDF && fileUrl;
 
   function trimStringWithEllipsis(input: string, maxLength: number): string {
@@ -111,9 +111,9 @@ export const ChatItem = ({
       }&${conversationId && conversationId}`;
 
       await fetch(`${window.location.origin}/${socketUrl}`, {
-        method: "PATCH",
+        method: 'PATCH',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
       });
@@ -126,62 +126,62 @@ export const ChatItem = ({
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
+      if (event.key === 'Escape') {
         setIsEditing(false);
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown);
 
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   useEffect(() => {
-    setValue("content", content);
+    setValue('content', content);
   }, [content, setValue]);
 
   return (
-    <div className="relative group flex items-center hover:bg-black/5 p-4 transition w-full">
-      <div className="group flex gap-x-2 items-start w-full">
-        <div className="cursor-pointer hover:drop-shadow-md transition">
+    <div className='relative flex items-center w-full p-4 transition group hover:bg-black/5'>
+      <div className='flex items-start w-full group gap-x-2'>
+        <div className='transition cursor-pointer hover:drop-shadow-md'>
           <Avatar
-            className="transition-transform w-7 h-7"
+            className='transition-transform w-7 h-7'
             src={member.profile.imageUrl}
             onClick={onMemberClick}
           />
         </div>
-        <div className="flex flex-col w-full">
-          <div className="flex items-center gap-x-2">
-            <div className="flex items-center">
+        <div className='flex flex-col w-full'>
+          <div className='flex items-center gap-x-2'>
+            <div className='flex items-center'>
               <p
-                className="font-semibold text-sm hover:underline cursor-pointer mr-2"
+                className='mr-2 text-sm font-semibold cursor-pointer hover:underline'
                 onClick={onMemberClick}
               >
                 {member.profile.name}
               </p>
-              <ActionTooltip label={member.role} placement="top">
+              <ActionTooltip label={member.role} placement='top'>
                 {roleIconMap[member.role]}
               </ActionTooltip>
             </div>
-            <span className="text-xs text-zinc-500 dark:text-zinc-400">
+            <span className='text-xs text-zinc-500 dark:text-zinc-400'>
               {timestamp}
             </span>
           </div>
           {isImage && (
             <Card
-              shadow="sm"
+              shadow='sm'
               isPressable
-              onPress={() => window.open(fileUrl, "_blank")}
-              className="w-60 mt-2"
+              onPress={() => window.open(fileUrl, '_blank')}
+              className='mt-2 w-60'
             >
-              <CardBody className="overflow-visible p-0">
+              <CardBody className='p-0 overflow-visible'>
                 <Image
-                  shadow="sm"
-                  radius="lg"
+                  shadow='sm'
+                  radius='lg'
                   width={300}
                   height={200}
                   src={fileUrl}
-                  alt="test"
+                  alt='test'
                   isZoomed
                 />
               </CardBody>
@@ -189,14 +189,14 @@ export const ChatItem = ({
           )}
           {isPDF && (
             <Button
-              variant="flat"
-              color="secondary"
-              startContent={<HiDocument className="w-7 h-7" />}
+              variant='flat'
+              color='secondary'
+              startContent={<HiDocument className='w-7 h-7' />}
               as={Link}
               href={fileUrl}
               showAnchorIcon
-              target="_blank"
-              className="w-96 justify-start mt-2"
+              target='_blank'
+              className='justify-start mt-2 w-96'
             >
               {trimStringWithEllipsis(fileUrl, 45)}
             </Button>
@@ -204,14 +204,14 @@ export const ChatItem = ({
           {!fileUrl && !isEditing && (
             <p
               className={cn(
-                "text-sm text-zinc-600 dark:text-zinc-300",
+                'text-sm text-zinc-600 dark:text-zinc-300',
                 deleted &&
-                  "italic text-zinc-500 dark:text-zinc-400 text-xs mt-1"
+                  'italic text-zinc-500 dark:text-zinc-400 text-xs mt-1'
               )}
             >
               {content}
               {isUpdated && !deleted && (
-                <span className="text-10px mx-2 text-zinc-500 dark:text-zinc-400">
+                <span className='mx-2 text-10px text-zinc-500 dark:text-zinc-400'>
                   (edited)
                 </span>
               )}
@@ -221,18 +221,18 @@ export const ChatItem = ({
             <>
               <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="flex items-center w-full gap-x-2 pt-2"
+                className='flex items-center w-full pt-2 gap-x-2'
               >
                 <Input
                   isDisabled={isLoading}
-                  placeholder="Edited message"
-                  {...register("content")}
+                  placeholder='Edited message'
+                  {...register('content')}
                 ></Input>
-                <Button color="primary" isLoading={isLoading} type="submit">
-                  {isLoading ? "Saving..." : "Save"}
+                <Button color='primary' isLoading={isLoading} type='submit'>
+                  {isLoading ? 'Saving...' : 'Save'}
                 </Button>
               </form>
-              <span className="text-xs mt-1 text-zinc-400">
+              <span className='mt-1 text-xs text-zinc-400'>
                 Press escape to cancel, enter to save
               </span>
             </>
@@ -240,33 +240,33 @@ export const ChatItem = ({
         </div>
       </div>
       {canDeleteMessage && (
-        <div className="hidden group-hover:flex items-center gap-x-2 absolute p-1 right-5">
+        <div className='absolute items-center hidden p-1 group-hover:flex gap-x-2 right-5'>
           {canEditMessage && !isEditing && (
-            <ActionTooltip label="Edit" placement="top">
+            <ActionTooltip label='Edit' placement='top'>
               <Button
                 isIconOnly
-                variant="light"
-                size="sm"
+                variant='light'
+                size='sm'
                 onPress={() => setIsEditing(true)}
               >
-                <HiPencil className="w-4 h-4" />
+                <HiPencil className='w-4 h-4' />
               </Button>
             </ActionTooltip>
           )}
           {!isEditing && (
-            <ActionTooltip label="Delete" placement="top">
+            <ActionTooltip label='Delete' placement='top'>
               <Button
                 isIconOnly
-                variant="light"
-                size="sm"
+                variant='light'
+                size='sm'
                 onPress={() =>
-                  onOpen("deleteMessage", {
+                  onOpen('deleteMessage', {
                     apiUrl: `${socketUrl}/${id}`,
                     query: socketQuery,
                   })
                 }
               >
-                <HiTrash className="w-4 h-4" />
+                <HiTrash className='w-4 h-4' />
               </Button>
             </ActionTooltip>
           )}

@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Modal,
   ModalContent,
@@ -9,10 +9,10 @@ import {
   ModalFooter,
   Button,
   Input,
-} from "@nextui-org/react";
-import { useForm, Controller } from "react-hook-form";
-import FileUpload from "@/components/file-upload";
-import { useRouter } from "next/navigation";
+} from '@nextui-org/react';
+import { useForm, Controller } from 'react-hook-form';
+import FileUpload from '@/components/file-upload';
+import { useRouter } from 'next/navigation';
 
 const InitialModal = () => {
   const { control, handleSubmit, register } = useForm();
@@ -22,16 +22,16 @@ const InitialModal = () => {
   const onSubmit = async (data: any) => {
     try {
       setIsLoading(true);
-      const response = await fetch("/api/servers", {
-        method: "POST",
+      const response = await fetch('/api/servers', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({ data }),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to create server");
+        throw new Error('Failed to create server');
       }
 
       setIsLoading(false);
@@ -48,9 +48,9 @@ const InitialModal = () => {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1 text-center">
-                <h1 className="text-2xl mt-4">Customize your server</h1>
-                <p className="text-sm text-zinc-400 mt-2">
+              <ModalHeader className='flex flex-col gap-1 text-center'>
+                <h1 className='mt-4 text-2xl'>Customize your server</h1>
+                <p className='mt-2 text-sm text-zinc-400'>
                   Give your server a personality with a name and an image. You
                   can always change it later.
                 </p>
@@ -58,12 +58,12 @@ const InitialModal = () => {
               <form onSubmit={handleSubmit(onSubmit)}>
                 <ModalBody>
                   <Controller
-                    name="imageUrl"
+                    name='imageUrl'
                     control={control}
-                    defaultValue=""
+                    defaultValue=''
                     render={({ field }) => (
                       <FileUpload
-                        endpoint="serverImage"
+                        endpoint='serverImage'
                         value={field.value}
                         onChange={(url) => {
                           field.onChange(url);
@@ -73,22 +73,22 @@ const InitialModal = () => {
                   />
                   <Input
                     autoFocus
-                    label="Server Name"
-                    placeholder="Enter server name"
-                    variant="bordered"
+                    label='Server Name'
+                    placeholder='Enter server name'
+                    variant='bordered'
                     isRequired
-                    labelPlacement="outside"
-                    {...register("serverName")}
+                    labelPlacement='outside'
+                    {...register('serverName')}
                   />
                 </ModalBody>
                 <ModalFooter>
                   <Button
-                    color="primary"
-                    type="submit"
+                    color='primary'
+                    type='submit'
                     isLoading={isLoading}
-                    className="w-full sm:w-auto hover:bg-blue-500"
+                    className='w-full sm:w-auto hover:bg-blue-500'
                   >
-                    {isLoading ? "Creating..." : "Create"}
+                    {isLoading ? 'Creating...' : 'Create'}
                   </Button>
                 </ModalFooter>
               </form>

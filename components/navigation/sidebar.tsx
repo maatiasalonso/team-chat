@@ -1,16 +1,16 @@
-import { currentProfile } from "@/lib/current-profile";
-import { db } from "@/lib/db";
-import { redirect } from "next/navigation";
-import { Action } from "./action";
-import { NavigationItem } from "./item";
-import { ActionDivider } from "../action-divider";
-import { ThemeSwitch } from "../theme-switch";
-import { NavigationUser } from "./user";
+import { currentProfile } from '@/lib/current-profile';
+import { db } from '@/lib/db';
+import { redirect } from 'next/navigation';
+import { Action } from './action';
+import { NavigationItem } from './item';
+import { ActionDivider } from '../action-divider';
+import { ThemeSwitch } from '../theme-switch';
+import { NavigationUser } from './user';
 
 export const Sidebar = async () => {
   const profile = await currentProfile();
 
-  if (!profile) return redirect("/");
+  if (!profile) return redirect('/');
 
   const servers = await db.server.findMany({
     where: {
@@ -23,12 +23,12 @@ export const Sidebar = async () => {
   });
 
   return (
-    <div className="space-y-4 flex flex-col items-center h-full w-full dark:bg-[#1E1F22] bg-[#E3E5E8] py-3">
+    <div className='space-y-4 flex flex-col items-center h-full w-full dark:bg-[#1E1F22] bg-[#E3E5E8] py-3'>
       <Action />
-      <div className="w-10">
+      <div className='w-10'>
         <ActionDivider />
       </div>
-      <div className="flex-1 w-full space-y-4 overflow-y-auto scrollbar-hide">
+      <div className='flex-1 w-full space-y-4 overflow-y-auto scrollbar-hide'>
         {servers.map((server: any) => (
           <div key={server.id}>
             <NavigationItem
@@ -39,7 +39,7 @@ export const Sidebar = async () => {
           </div>
         ))}
       </div>
-      <div className="pb-3 mt-auto flex items-center flex-col gap-y-4">
+      <div className='flex flex-col items-center pb-3 mt-auto gap-y-4'>
         <ThemeSwitch />
         <NavigationUser profile={profile} />
       </div>

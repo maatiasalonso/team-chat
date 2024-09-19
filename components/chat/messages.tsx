@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { Member } from "@prisma/client";
-import { format } from "date-fns";
-import { ChatWelcome } from "./welcome";
-import { useChatQuery } from "@/hooks/use-chat-query";
-import { Button, Spinner } from "@nextui-org/react";
-import { LuServerCrash } from "react-icons/lu";
-import { Fragment, useRef, ElementRef } from "react";
-import { MessageWithMemberWithProfile } from "@/types";
-import { ChatItem } from "./item";
-import { useChatSocket } from "@/hooks/use-chat-socket";
-import { useChatScroll } from "@/hooks/use-chat-scroll";
+import { Member } from '@prisma/client';
+import { format } from 'date-fns';
+import { ChatWelcome } from './welcome';
+import { useChatQuery } from '@/hooks/use-chat-query';
+import { Button, Spinner } from '@nextui-org/react';
+import { LuServerCrash } from 'react-icons/lu';
+import { Fragment, useRef, ElementRef } from 'react';
+import { MessageWithMemberWithProfile } from '@/types';
+import { ChatItem } from './item';
+import { useChatSocket } from '@/hooks/use-chat-socket';
+import { useChatScroll } from '@/hooks/use-chat-scroll';
 
 interface ChatMessagesProps {
   name: string;
@@ -19,12 +19,12 @@ interface ChatMessagesProps {
   apiUrl: string;
   socketUrl: string;
   socketQuery: Record<string, string>;
-  paramKey: "channelId" | "conversationId";
+  paramKey: 'channelId' | 'conversationId';
   paramValue: string;
-  type: "channel" | "conversation";
+  type: 'channel' | 'conversation';
 }
 
-const DATE_FORMAT = "d MMM yyyy, HH:mm";
+const DATE_FORMAT = 'd MMM yyyy, HH:mm';
 
 export const ChatMessages = ({
   name,
@@ -41,8 +41,8 @@ export const ChatMessages = ({
   const addKey = `chat:${chatId}:message`;
   const updateKey = `chat:${chatId}:messages:update`;
 
-  const chatRef = useRef<ElementRef<"div">>(null);
-  const bottomRef = useRef<ElementRef<"div">>(null);
+  const chatRef = useRef<ElementRef<'div'>>(null);
+  const bottomRef = useRef<ElementRef<'div'>>(null);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useChatQuery({
@@ -60,19 +60,19 @@ export const ChatMessages = ({
     count: data?.pages?.[0]?.items?.length ?? 0,
   });
 
-  if (status === "pending") {
+  if (status === 'pending') {
     return (
-      <div className="flex flex-col flex-1 justify-center items-center">
-        <Spinner color="default">Loading messages...</Spinner>
+      <div className='flex flex-col items-center justify-center flex-1'>
+        <Spinner color='default'>Loading messages...</Spinner>
       </div>
     );
   }
 
-  if (status === "error") {
+  if (status === 'error') {
     return (
-      <div className="flex flex-col flex-1 justify-center items-center">
-        <LuServerCrash className="h-7 w-7 text-zinc-500 my-4" />
-        <p className="text-xs text-zinc-500 dark:text-zinc-400">
+      <div className='flex flex-col items-center justify-center flex-1'>
+        <LuServerCrash className='my-4 h-7 w-7 text-zinc-500' />
+        <p className='text-xs text-zinc-500 dark:text-zinc-400'>
           Something went wrong!
         </p>
       </div>
@@ -80,18 +80,18 @@ export const ChatMessages = ({
   }
 
   return (
-    <div className="flex-1 flex flex-col py-4 overflow-y-auto" ref={chatRef}>
-      {!hasNextPage && <div className="flex-1" />}
+    <div className='flex flex-col flex-1 py-4 overflow-y-auto' ref={chatRef}>
+      {!hasNextPage && <div className='flex-1' />}
       {!hasNextPage && <ChatWelcome type={type} name={name} />}
       {hasNextPage && (
-        <div className="flex justify-center">
+        <div className='flex justify-center'>
           {isFetchingNextPage ? (
-            <Spinner color="default" />
+            <Spinner color='default' />
           ) : (
             <Button
-              variant="light"
-              size="sm"
-              radius="lg"
+              variant='light'
+              size='sm'
+              radius='lg'
               onPress={() => fetchNextPage}
             >
               Load previous messages
@@ -99,7 +99,7 @@ export const ChatMessages = ({
           )}
         </div>
       )}
-      <div className="flex flex-col-reverse mt-auto">
+      <div className='flex flex-col-reverse mt-auto'>
         {data?.pages?.map((group, i) => (
           <Fragment key={i}>
             {group.items.map((message: MessageWithMemberWithProfile) => (
