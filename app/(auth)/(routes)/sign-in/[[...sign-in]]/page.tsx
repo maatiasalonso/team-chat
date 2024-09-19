@@ -1,12 +1,5 @@
-import { auth, SignIn } from '@clerk/nextjs';
-import { redirect } from 'next/navigation';
+import { SignIn } from '@clerk/nextjs';
 
 export default async function Page() {
-  const user = await auth();
-
-  if (user) {
-    return redirect('/servers');
-  }
-
   return <SignIn />;
 }

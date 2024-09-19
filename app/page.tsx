@@ -1,29 +1,18 @@
-'use client';
 import {
   HiOutlineChatAlt2,
   HiOutlineUsers,
   HiOutlineVideoCamera,
 } from 'react-icons/hi';
 import Link from 'next/link';
-import {
-  Button,
-  Input,
-  Navbar,
-  NavbarBrand,
-  NavbarContent,
-  NavbarItem,
-  NavbarMenu,
-  NavbarMenuItem,
-  NavbarMenuToggle,
-  Tooltip,
-} from '@nextui-org/react';
-import { ThemeSwitch } from '@/components/theme-switch';
-import { useState } from 'react';
+import { Button, Input, Tooltip } from '@nextui-org/react';
+import { NavbarMain } from './client';
+import { auth } from '@clerk/nextjs';
 
-export default function MainPage() {
+export default async function MainPage() {
+  const user = await auth();
   return (
     <div className='flex flex-col min-h-[100dvh]'>
-      <NavbarMain />
+      <NavbarMain user={user} />
       <main className='flex-1'>
         <Hero />
         <Features />
@@ -47,105 +36,6 @@ export default function MainPage() {
     </div>
   );
 }
-
-const NavbarMain = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const menuItems = [
-    {
-      key: 'features',
-      title: 'Features',
-      href: 'features',
-    },
-    {
-      key: 'about',
-      title: 'About',
-      href: 'about',
-    },
-    {
-      key: 'contact',
-      title: 'Contact',
-      href: 'contact',
-    },
-  ];
-
-  const handleNavItem = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    const id = (e.target as HTMLButtonElement)
-      .getAttribute('href')
-      ?.substring(1);
-    const element = document.getElementById(id!);
-    element?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  return (
-    <Navbar onMenuOpenChange={setIsMenuOpen} className='dark:bg-zinc-800'>
-      <NavbarContent>
-        <NavbarMenuToggle
-          aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-          className='sm:hidden'
-        />
-        <NavbarBrand>
-          <Link
-            className='flex items-center justify-center gap-2 hover:opacity-80'
-            href='/'
-          >
-            <HiOutlineChatAlt2 className='w-6 h-6' />
-            <span className='font-bold uppercase'>Chatter</span>
-          </Link>
-        </NavbarBrand>
-      </NavbarContent>
-
-      <NavbarContent className='hidden gap-4 sm:flex' justify='center'>
-        {menuItems.map((item) => (
-          <NavbarItem key={item.key}>
-            <Button
-              key={item.key}
-              variant='light'
-              className='text-sm font-medium'
-              href={`#${item.href}`}
-              onClick={handleNavItem}
-            >
-              {item.title}
-            </Button>
-          </NavbarItem>
-        ))}
-      </NavbarContent>
-      <NavbarContent justify='end'>
-        <NavbarItem className='flex items-center gap-2'>
-          <Button
-            variant='light'
-            className='text-sm font-medium'
-            href={`/sign-in`}
-            as={Link}
-          >
-            Log In
-          </Button>
-          <ThemeSwitch placement='bottom' />
-        </NavbarItem>
-      </NavbarContent>
-      <NavbarMenu>
-        {menuItems.map((item, index) => (
-          <NavbarMenuItem key={`${item}-${index}`}>
-            <Link
-              color={
-                index === 2
-                  ? 'primary'
-                  : index === menuItems.length - 1
-                  ? 'danger'
-                  : 'foreground'
-              }
-              className='w-full'
-              href={`#${item.href}`}
-            >
-              {item.title}
-            </Link>
-          </NavbarMenuItem>
-        ))}
-      </NavbarMenu>
-    </Navbar>
-  );
-};
 
 const Hero = () => {
   return (
