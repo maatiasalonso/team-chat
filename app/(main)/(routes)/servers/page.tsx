@@ -1,22 +1,13 @@
 import InitialModal from '@/components/modals/initial';
-import { currentProfile } from '@/lib/current-profile';
 import { db } from '@/lib/db';
+import { initialProfile } from '@/lib/initial-profile';
 import { redirect } from 'next/navigation';
 
-interface ServerIdPageProps {
-  params: {
-    serverId: string;
-  };
-}
+const ServersPage = async () => {
+  const profile = await initialProfile();
 
-const ServersPage = async ({ params }: ServerIdPageProps) => {
-  const profile = await currentProfile();
-
-  if (!profile) return redirect('/');
-
-  const server = await db.server.findUnique({
+  const server = await db.server.findFirst({
     where: {
-      id: params.serverId,
       members: {
         some: {
           profileId: profile.id,
@@ -43,7 +34,7 @@ const ServersPage = async ({ params }: ServerIdPageProps) => {
 
   if (initialChannel?.name !== 'general') return null;
 
-  return redirect(`/servers/${params.serverId}/channels/${initialChannel?.id}`);
+  return redirect(`/servers/${server.id}/channels/${initialChannel?.id}`);
 };
 
 export default ServersPage;

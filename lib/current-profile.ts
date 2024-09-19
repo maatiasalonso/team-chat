@@ -11,6 +11,6 @@ export const currentProfile = async () => {
       userId,
     },
   });
-
+  
   return profile;
 };

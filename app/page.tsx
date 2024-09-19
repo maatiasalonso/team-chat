@@ -23,7 +23,6 @@ import { useState } from 'react';
 export default function MainPage() {
   return (
     <div className='flex flex-col min-h-[100dvh]'>
-      {/* <Header /> */}
       <NavbarMain />
       <main className='flex-1'>
         <Hero />
@@ -33,7 +32,16 @@ export default function MainPage() {
       </main>
       <footer className='flex flex-col items-center w-full gap-2 px-4 py-6 sm:flex-row shrink-0 md:px-6 dark:bg-zinc-800 bg-zinc-100'>
         <p className='text-xs text-zinc-500 dark:text-zinc-400'>
-          © 2023 Chatter Inc. All rights reserved.
+          © 2023 Chatter. Based on{' '}
+          <a
+            href='https://github.com/AntonioErdeljac'
+            target='_blank'
+            rel='noopener noreferrer'
+            className='hover:opacity-80'
+          >
+            AntonioErdeljac
+          </a>{' '}
+          template.
         </p>
       </footer>
     </div>
