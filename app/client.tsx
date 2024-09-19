@@ -13,13 +13,11 @@ import {
 } from '@nextui-org/react';
 import { ThemeSwitch } from '@/components/theme-switch';
 import { useState } from 'react';
+import { useUser } from '@clerk/nextjs';
 
-type NavbarMainProps = {
-  user: any;
-};
-
-export const NavbarMain = ({ user }: NavbarMainProps) => {
+export const NavbarMain = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isSignedIn } = useUser();
 
   const menuItems = [
     {
@@ -83,16 +81,7 @@ export const NavbarMain = ({ user }: NavbarMainProps) => {
       </NavbarContent>
       <NavbarContent justify='end'>
         <NavbarItem className='flex items-center gap-2'>
-          {user ? (
-            <Button
-              variant='light'
-              className='text-sm font-medium'
-              href={`/sign-in`}
-              as={Link}
-            >
-              Log In
-            </Button>
-          ) : (
+          {isSignedIn ? (
             <Button
               variant='light'
               className='text-sm font-medium'
@@ -100,6 +89,15 @@ export const NavbarMain = ({ user }: NavbarMainProps) => {
               as={Link}
             >
               Go to Servers
+            </Button>
+          ) : (
+            <Button
+              variant='light'
+              className='text-sm font-medium'
+              href={`/sign-in`}
+              as={Link}
+            >
+              Log In
             </Button>
           )}
           <ThemeSwitch placement='bottom' />

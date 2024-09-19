@@ -1,3 +1,4 @@
+'use server';
 import {
   HiOutlineChatAlt2,
   HiOutlineUsers,
@@ -6,13 +7,12 @@ import {
 import Link from 'next/link';
 import { Button, Input, Tooltip } from '@nextui-org/react';
 import { NavbarMain } from './client';
-import { auth } from '@clerk/nextjs';
+import { currentUser } from '@clerk/nextjs';
 
 export default async function MainPage() {
-  const user = await auth();
   return (
     <div className='flex flex-col min-h-[100dvh]'>
-      <NavbarMain user={user} />
+      <NavbarMain />
       <main className='flex-1'>
         <Hero />
         <Features />
